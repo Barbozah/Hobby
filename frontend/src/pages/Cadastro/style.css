@@ -1,0 +1,8 @@
+.input-cadastro {
+    background-color: #575e64 !important;
+}
+.form-control::placeholder { 
+    color: white !important; 
+    opacity: 1;
+}
+
