@@ -1,0 +1,22 @@
+a{
+    color: white !important;
+}
+
+a:hover{
+    color: rgb(199, 199, 199) !important;
+}
+
+.btn-proprio {
+    background-color: #555b61;
+    border: none;
+    color: white;
+    height: 3em;
+}
+
+.btn-proprio:hover {
+    filter: brightness(0.8);
+}
+
+p{
+    color: rgb(190, 190, 190);
+}

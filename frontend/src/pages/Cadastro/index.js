@@ -1,14 +1,14 @@
 import React from 'react';
-//import {Container, Button, Form, Image, Row, Col} from 'react-bootstrap';
-//import Logo from './logo.png'; <- colocar localização relativa a logo
+import {Container, Button, Form, Image, Row, Col} from 'react-bootstrap';
+import Logo from '../../../assets/logo.png'; 
 import ReactDOM from 'react-dom';
-//import './style.css';
+import './style.css';
 
 
 //OBSEVAÇÃO:devido a alguns problemas, eu não consegui rodar nosso projeto bem, mas criei a tela de cadastro em outro projeto, basta apenas resolver 
 //os problemas de importação do css e descomentar os códigos aqui, que funcionará normalmente(testei tudinho no outro projeto)
 export default function Cadastro(){
-/*	
+	
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
@@ -37,20 +37,17 @@ export default function Cadastro(){
     setValidated(true);
   };
 
-*/
+
 
 
 /*
-  comentários:
-  >colocar a logo original no src da imagem 
-  >não esquecer do style.css criado
+
 
 
 */
 	
     return(
-        <h1>Cadastro Hobby</h1> //apagar isso aqui após resolver os problemas
-		/*
+		
 		
 		
 		<Container className="justify-content-center my-5 w-25 bg-secondary p-5">
@@ -121,7 +118,7 @@ export default function Cadastro(){
 		</Container>
 		
 		
-		*/
+		
 		
 		
 		

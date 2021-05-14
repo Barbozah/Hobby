@@ -6,3 +6,6 @@
     opacity: 1;
 }
 
+.invalid-feedback {
+    color: red !important;
+}
