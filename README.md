@@ -7,6 +7,8 @@ Repositório GitHub: https://github.com/Barbozah/Hobby
 - Igor Felipe
 - Lucielton Manoel
 - Paulo Victor
+- Daniel Lemos
+- Rodrigo Guedes
 
 ## Descrição 
 
