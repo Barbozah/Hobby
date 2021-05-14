@@ -1,4 +1,4 @@
-require('dotenv-safe').config();
+require('dotenv').config();
 
 exports.middlewareGlobal = (req, res, next) => {
     res.locals.umaVariaveLocal = 'valor';
