@@ -13,7 +13,8 @@ const helmet = require('helmet'); // para segurança, recomendado pelo Express
 // configuração do banco (já online)
 const PORT = process.env.PORT || 3000;
 const mongoose = require('mongoose');
-mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifiedTopology: true })
+
+mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
   .then(() => {
     app.emit("mongoDB");
     console.log("mondoDB connected");
@@ -46,7 +47,7 @@ app.use(middlewareGlobal);
 app.use(routes); 
 
 app.on("mongoDB", () => {
-  app.listen(PORT,   function(err){ 
+  app.listen(PORT, function(err){ 
     if (err) 
         console.log(err); 
     console.log("Server listening on PORT", PORT); 

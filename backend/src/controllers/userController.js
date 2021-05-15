@@ -1,18 +1,36 @@
-const userFactory = require('../models/UserModel');
+const UserSchema = require('../models/UserModel');
 
-exports.list = function (req, res) {
-    res.send(req.body);
-}
-
-exports.register = async function (req, res) {
+exports.findById = async (req, res) => {
     try {
-        const user = userFactory(req.body);
-        await user.register();
-        return res.status(201).send({ user: user });
-    } catch (e) {
-        console.log(e);
-        return res.status(400).send({ error: 'usuário não foi criado'});
+      const { params: { id } } = req;
+  
+      const user = await UserSchema.findOne({ id });
+  
+      if (!user) { throw new Error("não encontrado"); }
+  
+      res.json(user);
+    } catch (err) {
+        console.log(err);
+        res.json(err);
+    }
+  };
+
+exports.signUp = async function (req, res) {
+    try {
+        let user = new UserSchema(req.body);
+        user = await user.save();
+        return res.status(201).json(user);
+    } catch (err) {
+        console.log("Usuário não cadastrado");
+        if (err.name == 'ValidationError') {
+            for (field in err.errors) { 
+                console.log(err.errors[field].message);
+                return res.status(400).json({ error: err.errors[field].message });
+            }
+        } else {
+            console.log(err);
+            return res.status(400).json({ error: err.message });
+        }
     }
 }
-
 
