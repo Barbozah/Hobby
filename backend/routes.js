@@ -10,7 +10,7 @@ const {
     signUp,
     findAll,
     alterPassword
-  }  = require('./src/controllers/userController');
+} = require('./src/controllers/userController');
 /* 
 const userController = require('./src/controllers/userController');
 const loginController = require('./src/controllers/loginController');
@@ -18,6 +18,6 @@ const loginController = require('./src/controllers/loginController');
 route.get('/id', findById);
 route.post('/signup', signUp);
 
-route.post('/login', middlewares.validateJWT , loginController.register); 
-route.post('/token', tokenController.generateToken );
+route.post('/login', middlewares.validateJWT, loginController.register);
+route.post('/token', tokenController.generateToken);
 module.exports = route;

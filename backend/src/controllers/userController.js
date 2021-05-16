@@ -1,19 +1,18 @@
 const UserSchema = require('../models/UserModel');
 
-exports.findById = async (req, res) => {
+exports.findById = async function (req, res) {
     try {
-      const { params: { id } } = req;
-  
-      const user = await UserSchema.findOne({ id });
-  
-      if (!user) { throw new Error("não encontrado"); }
-  
-      res.json(user);
+
+        const user = await UserSchema.findOne({id: req.body.id});
+
+        if (!user) { console.log("não encontrado"); }
+
+        res.json(user);
     } catch (err) {
         console.log(err);
         res.json(err);
     }
-  };
+};
 
 exports.signUp = async function (req, res) {
     try {
@@ -23,7 +22,7 @@ exports.signUp = async function (req, res) {
     } catch (err) {
         console.log("Usuário não cadastrado");
         if (err.name == 'ValidationError') {
-            for (field in err.errors) { 
+            for (field in err.errors) {
                 console.log(err.errors[field].message);
                 return res.status(400).json({ error: err.errors[field].message });
             }

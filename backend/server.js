@@ -20,7 +20,7 @@ mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifi
     console.log("mondoDB connected");
   })
   .catch(e => console.log(e));
-mongoose.connection.dropDatabase();
+//mongoose.connection.dropDatabase();
 
 
 const session = require('express-session'); // sessão de login
