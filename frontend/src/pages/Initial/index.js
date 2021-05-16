@@ -1,11 +1,12 @@
 import React from 'react';
 import {Container, Image, Row, Col} from 'react-bootstrap';
 import {Link, useHistory} from 'react-router-dom';
-import Logo from '../../../assets/logo.png';
-import './style.css';
+import './init.css';
+import Logo from '../../assets/logo.png';
 
-export default function Initial(){
- 
+
+export default function Initial() {
+
     const history = useHistory()
 
 
@@ -18,7 +19,7 @@ export default function Initial(){
     <Container className="justify-content-center my-5 w-25 bg-secondary p-5">
     <Row>
         <Col className="d-flex justify-content-center mb-4">
-          <Image src={Logo} alt="logo Hobby"></Image>
+          <Image src={Logo} alt="logo Hobby" width={180}></Image>
         </Col>
         
       </Row>
@@ -35,3 +36,5 @@ export default function Initial(){
     </Container>
   );
 }
+
+

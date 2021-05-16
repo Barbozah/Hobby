@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Container, Image, Row, Col, Form, Button} from 'react-bootstrap';
-import Logo from '../../../../assets/logo.png';
-import '../style.css';
+import Logo from '../../../assets/logo.png';
+import '../../Cadastro/style.css';
 
 export default function Login() {
 
@@ -34,7 +34,7 @@ export default function Login() {
     <Container className="justify-content-center my-5 w-25 bg-secondary p-5">
         <Row>
             <Col className="d-flex justify-content-center mb-4">
-                <Image src={Logo} alt="logo Hobby"></Image>
+                <Image src={Logo} alt="logo Hobby" width={180}></Image>
             </Col>
 
         </Row>
