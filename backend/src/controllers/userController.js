@@ -50,9 +50,22 @@ exports.alterPassword = async (req, res) => {
         user.password = newPassword;
         user = await user.save();
         res.status(200).json(user);
-        
+
     } catch (error) {
         console.log(err);
         res.status(404).json(err);
     }
 }
+
+module.exports.findAll = async (req, res, next) => {
+    try {
+        const { query: { page, size } } = req;
+
+        const users = await UserSchema.find({}).skip((page || 0) * (size || 10)).lean();
+
+        res.json(users);
+    } catch (error) {
+        next(error);
+    }
+}
+
