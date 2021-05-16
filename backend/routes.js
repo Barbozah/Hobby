@@ -15,6 +15,7 @@ const {
 const userController = require('./src/controllers/userController');
 const loginController = require('./src/controllers/loginController');
 */
+route.post('/alterPassword', alterPassword);
 route.get('/id', findById);
 route.post('/signup', signUp);
 

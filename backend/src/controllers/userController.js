@@ -3,14 +3,19 @@ const UserSchema = require('../models/UserModel');
 exports.findById = async function (req, res) {
     try {
 
-        const user = await UserSchema.findOne({id: req.body.id});
+        const { body: { id } } = req;
 
-        if (!user) { console.log("não encontrado"); }
+        const user = await UserSchema.findOne({ id: id });
 
-        res.json(user);
+        if (!user) {
+            console.log("não encontrado");
+            res.status(404).json("não encontrado");
+        }
+        res.status(200).json(user);
+
     } catch (err) {
         console.log(err);
-        res.json(err);
+        res.status(404).json(err);
     }
 };
 
@@ -33,3 +38,21 @@ exports.signUp = async function (req, res) {
     }
 }
 
+exports.alterPassword = async (req, res) => {
+    try {
+        const { id, newPassword } = req.body;
+
+        let user = await UserSchema.findOne({ id: id });
+        if (!user) {
+            console.log("não encontrado");
+            res.status(404).json("não encontrado");
+        }
+        user.password = newPassword;
+        user = await user.save();
+        res.status(200).json(user);
+        
+    } catch (error) {
+        console.log(err);
+        res.status(404).json(err);
+    }
+}
