@@ -20,14 +20,17 @@ exports.validateJWT = (req,res,next) => {
     const jwt = require('jsonwebtoken');
     const token = req.headers['authorization'];
 
-    console.log('Verificando JWT para token ' + token);    
 
     if(!token) return res.status(401).end();
-    
+
+    console.log('Verificando JWT para token ' + token);        
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
-        if(err) return res.status(401).end();
+        if(err){
+            console.log(err); 
+            return res.status(401).end();
+        } 
         
-        req.userId = decoded.id;
+        req.user = decoded;
         next();
     }
     ); 

@@ -1,4 +1,5 @@
 const UserSchema = require('../models/UserModel');
+require('dotenv').config();
 
 exports.findById = async function (req, res) {
     try {
@@ -31,5 +32,30 @@ exports.signUp = async function (req, res) {
             return res.status(400).json({ error: err.message });
         }
     }
+}
+
+exports.signIn = async function (req, res) {
+
+    const email = req.body.email;
+
+    const user = await UserSchema.findOne({email: email }, 
+        function(err,user){
+            if(err) throw err;
+
+            if (!user || !user.comparePassword(req.body.password)) {
+                return res.status(401).json({ message: 'Email ou Senha inválidos' });
+              }
+
+              const jwt = require('jsonwebtoken');
+              const expiresIn = process.env.tokenExpiresIn;
+
+              const token = jwt.sign({ email }, process.env.SECRET, { expiresIn: 300  });
+              return res.status(201).json(
+                  {
+                      access_token: token,
+                      expiresIn: expiresIn
+                  }
+              );
+        });
 }
 

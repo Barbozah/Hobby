@@ -46,7 +46,7 @@ UserSchema.pre('save', function (next) {
     }
 });
 UserSchema.methods.comparePassword = function (candidatePassword) {
-    const hash = crypto.pbkdf2Sync(candidatePassword || '', this.salt, 10000, 512, 'sha512').toString('hex');
+    const hash = crypto.pbkdf2Sync(candidatePassword || '', this.salt, 10000, 32, 'sha512').toString('hex');
     return this.password === hash;
   };
 
