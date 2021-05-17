@@ -3,6 +3,7 @@ const validators = require('mongoose-validators');
 const unique = require('mongoose-unique-validator');
 const crypto = require('crypto');
 const SALT = 16;
+const { getToken } = require('../config/jwt-configuration');
 
 const UserSchema = new mongoose.Schema({
     id: {
@@ -26,16 +27,23 @@ const UserSchema = new mongoose.Schema({
     gameList: [String],
     wishList: [String],
     preferences:[String],
-    on_off: Boolean,
+    status: Boolean,
     salt: String,
+    lastLogin: Date,
     token: String,
 }, { timestamps: true });
 UserSchema.plugin(unique, { message: '{PATH} já existente' });
 
 UserSchema.pre('save', function (next) {
     try {
+        this.lastLogin = this.updatedAt;
+
+        this.token = getToken(this);
+    
+        if (!this.isModified('password')) return next();
+
         this.id = this._id.toHexString().slice(0, 4);
-        this.on_off = true;
+        this.status = true;
         this.salt = crypto.randomBytes(SALT).toString('hex');
         const hash = crypto.pbkdf2Sync(this.password, this.salt, 10000, 32, 'sha512').toString('hex');
         this.password = hash;
@@ -46,7 +54,7 @@ UserSchema.pre('save', function (next) {
     }
 });
 UserSchema.methods.comparePassword = function (candidatePassword) {
-    const hash = crypto.pbkdf2Sync(candidatePassword || '', this.salt, 10000, 512, 'sha512').toString('hex');
+    const hash = crypto.pbkdf2Sync(candidatePassword || '', this.salt, 10000, 32, 'sha512').toString('hex');
     return this.password === hash;
   };
 
