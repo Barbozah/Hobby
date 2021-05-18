@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Container, Image, Row, Col, Form, Button} from 'react-bootstrap';
-import Logo from '../../../assets/logo.png';
-import '../../Cadastro/style.css';
+import Logo from '../../assets/logo.png';
+import './style.css';
 
 export default function Login() {
 
@@ -45,7 +45,7 @@ export default function Login() {
                 required
                 type="email"
                 placeholder="Email"
-                className="rounded-0 input-cadastro text-light border-secondary" 
+                className="rounded-0 input-login text-light border-secondary" 
                 />
                 <Form.Control.Feedback type="invalid">
                 Por favor, informe um endereço de email válido.
@@ -57,7 +57,7 @@ export default function Login() {
                 required
                 type="password"
                 placeholder="Senha"
-                className="rounded-0 input-cadastro text-light border-secondary" 
+                className="rounded-0 input-login text-light border-secondary" 
                 />
                 <Form.Control.Feedback type="invalid">
                 Por favor, informe uma senha.
