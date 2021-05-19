@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {Container, Button, Form, Image, Row, Col} from 'react-bootstrap';
+import {Container, Button, Form, Row, Col} from 'react-bootstrap';
 import './style.css';
-import Logo from '../../assets/logo.png';
+import Logo from '../../components/Logo';
 
 
-function Cadastro() {
+export default function Cadastro() {
 
  
   const [validated, setValidated] = useState(false);
@@ -36,20 +36,14 @@ function Cadastro() {
   };
 
 
-/*
-  comentários:
-  >colocar a logo original no src da imagem 
-  >não esquecer do style.css criado
 
-
-*/
   return (
 
 
     <Container className="justify-content-center my-5 w-25 bg-secondary p-5">
       <Row>
         <Col className="d-flex justify-content-center mb-4">
-          <Image src={Logo} alt="logo Hobby" width={180}></Image>
+          <Logo width={60}/>
         </Col>
         
       </Row>
@@ -114,5 +108,3 @@ function Cadastro() {
     </Container>
   );
 }
-
-export default Cadastro;

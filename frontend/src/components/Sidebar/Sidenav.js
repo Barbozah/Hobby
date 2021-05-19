@@ -4,8 +4,7 @@ import { SidebarData } from './SidebarData'
 import { IconContext } from 'react-icons'
 import { FaBars } from 'react-icons/fa'
 import { AiOutlineClose } from 'react-icons/ai'
-import { Image } from 'react-bootstrap';
-import Logo from '../assets/logo.svg'
+import Logo from '../Logo';
 import './Sidenav.css'
 
 export default function Sidenav() {
@@ -29,7 +28,7 @@ export default function Sidenav() {
               </Link>
             </li>
             <div className="logo">
-              <Image src={Logo} width="80%" alt="Hobby Games" />
+              <Logo/>
             </div>
             <br />
             {SidebarData.map((item, index) => {
