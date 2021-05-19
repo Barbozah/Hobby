@@ -1,16 +1,14 @@
 import React from 'react';
 import {Container} from 'react-bootstrap';
-
+import Carrocel from '../../components/Carrocel';
 
 
 
 export default function Home() {
 
   return (
-
-
     <Container>
-        <h1>Tela Home</h1>
+        <Carrocel/>
     </Container>
   );
 }
