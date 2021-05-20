@@ -1,5 +1,6 @@
 import React from 'react';
-import {Carousel, Image, Card, Button} from 'react-bootstrap';
+import {Image, Card, Button} from 'react-bootstrap';
+import Carousel from 'react-elastic-carousel';
 import './carrocel.css';    
 
 
@@ -7,8 +8,9 @@ export default function Carrocel(){
 
     
     return(
-        <Carousel>
-            <Carousel.Item>
+        
+            <Carousel itemsToShow={1}>
+                <>
                 <Image src="https://cdn.pocket-lint.com/r/s/1200x/assets/images/134398-games-review-batman-arkham-knight-review-image1-8HL7SgyOGl.jpg" className="w-75"/>
                 <Card className="w-25 rounded-0 border-0">
                     
@@ -24,8 +26,8 @@ export default function Carrocel(){
                         <Button variant="success" className="rounded-0 m-0 w-50">Carrinho</Button>
                     </Card.Footer>
                 </Card>
-            </Carousel.Item>
-            <Carousel.Item>
+                </>
+                <>
                 <Image src="https://i.ytimg.com/vi/SXvQ1nK4oxk/maxresdefault.jpg" className="w-75"/>
                 <Card className="w-25 rounded-0 border-0">
                     
@@ -41,9 +43,8 @@ export default function Carrocel(){
                         <Button variant="success" className="rounded-0 m-0 w-50">Carrinho</Button>
                     </Card.Footer>
                 </Card>
-            </Carousel.Item>
-            
-         
-        </Carousel>
+                </>
+            </Carousel>
+           
     )
 }
