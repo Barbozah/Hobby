@@ -5,6 +5,11 @@ exports.middlewareGlobal = (req, res, next) => {
     next();
 }
 
+exports.middlewareGlobal = (req, res, next) => {
+    console.log("0000000000000000000000000000000000000000000000")
+    next();
+}
+
 exports.checkCsrfError = (err, req, res, next) => {
     if(err && 'EBADCSRFTOKEN' === err.code){
         return res.send("404");

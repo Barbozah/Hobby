@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+const { configuration } = require('./src/config/jwt-configuration');
 const express = require('express');
 const app = express();
 const routes = require('./routes');

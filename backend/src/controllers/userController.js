@@ -7,7 +7,7 @@ const UserSchema = require('../models/userModel');
 
 module.exports.findById = async (req, res, next) => {
     try {
-        const { params: { id } } = req;
+        const { id } = req.token;
 
         const user = await UserSchema.findOne({ id });
 
@@ -74,7 +74,8 @@ module.exports.signUp = async (req, res, next) => {
 
 module.exports.alterPassword = async (req, res, next) => {
     try {
-        const { body: { id, newPassword } } = req;
+        const { body: { newPassword } } = req;
+        const { id } = req.token;
 
         let user = await UserSchema.findOne({ id });
 
@@ -84,8 +85,47 @@ module.exports.alterPassword = async (req, res, next) => {
 
         user.save().then(user => res.json(user));
 
-        
     } catch (error) {
         next(error);
     }
 };
+
+module.exports.alterEmail = async (req, res, next) => {
+    try {
+        const { body: { newEmail } } = req;
+        const { id } = req.token;
+
+        let user = await UserSchema.findOne({ id });
+
+        if (!user) { throw new InvalidCredentials(); }
+
+        user.email= newEmail;
+
+        user.save().then(user => {
+            res.status(200).end("Email alterado com sucesso");
+            console.log(user.email);
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports.deleteUser = async (req, res, next) => {
+    try {
+        const { id } = req.token;
+
+        let user = await UserSchema.findOne({ id });
+
+        if (!user) { throw new InvalidCredentials(); }
+
+        user.status = false;
+
+        user.save().then(user => res.end("usuário deletado"));
+        console.log(user.id, user.status, "usuário deletado");
+
+    } catch (error) {
+        next(error);
+    }
+};
+

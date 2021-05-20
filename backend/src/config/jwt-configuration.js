@@ -16,7 +16,7 @@ const getToken = (user) => {
 };
 
 const configuration = expressJWT({
-  secret: JWT_SECRET, algorithms: ['RS256'],
+  secret: JWT_SECRET, algorithms: ['SHA256'],
 });
 
 module.exports = { getToken, configuration };
