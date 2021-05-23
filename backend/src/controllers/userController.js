@@ -1,15 +1,16 @@
 
 const {
-    ResourceNotFound, InvalidCredentials, AlreadyExists, getKnownError
+    ResourceNotFound, InvalidCredentials, AlreadyExists,
 } = require('../exceptions/exception');
 const { getToken } = require('../config/jwt-configuration');
 const UserSchema = require('../models/userModel');
 
+
 module.exports.findById = async (req, res, next) => {
     try {
-        const { id } = req.token;
+        let { params: { _id } } = req;
 
-        const user = await UserSchema.findOne({ id });
+        const user = await UserSchema.findOne({ _id });
 
         if (!user) { throw new ResourceNotFound(); }
 
@@ -60,31 +61,30 @@ module.exports.signUp = async (req, res, next) => {
 
         const existingUser = await UserSchema.findOne({ email: body.email });
 
-        if (existingUser) { throw new AlreadyExists("Email já cadastrado"); }
+        if (existingUser) { throw new AlreadyExists(); }
 
         let user = new UserSchema(body);
 
         user = await user.save();
         res.json(user);
     } catch (error) {
-        next(getKnownError(error).message);
+        next(error);
     }
 };
 
-
 module.exports.alterPassword = async (req, res, next) => {
     try {
-        const { body: { newPassword } } = req;
-        const { id } = req.token;
+        const { body: { _id, newPassword } } = req;
 
-        let user = await UserSchema.findOne({ id });
+        const user = await UserSchema.findOne({ _id: _id });
 
         if (!user) { throw new InvalidCredentials(); }
 
         user.password = newPassword;
 
-        user.save().then(user => res.json(user));
+        user.save();
 
+        res.json(user);
     } catch (error) {
         next(error);
     }
@@ -92,40 +92,36 @@ module.exports.alterPassword = async (req, res, next) => {
 
 module.exports.alterEmail = async (req, res, next) => {
     try {
-        const { body: { newEmail } } = req;
-        const { id } = req.token;
+        const { body: { _id, newEmail } } = req;
 
-        let user = await UserSchema.findOne({ id });
+        const user = await UserSchema.findOne({ _id: _id });
 
         if (!user) { throw new InvalidCredentials(); }
 
-        user.email= newEmail;
+        user.email = newEmail;
 
-        user.save().then(user => {
-            res.status(200).end("Email alterado com sucesso");
-            console.log(user.email);
-        });
+        user.save();
 
+        res.json(user);
     } catch (error) {
         next(error);
     }
 };
 
-module.exports.deleteUser = async (req, res, next) => {
+module.exports.deactivate = async (req, res, next) => {
     try {
-        const { id } = req.token;
+        const { body: { _id } } = req;
 
-        let user = await UserSchema.findOne({ id });
+        const user = await UserSchema.findOne({ _id: _id });
 
         if (!user) { throw new InvalidCredentials(); }
 
         user.status = false;
 
-        user.save().then(user => res.end("usuário deletado"));
-        console.log(user.id, user.status, "usuário deletado");
+        user.save();
 
+        res.json(user);
     } catch (error) {
         next(error);
     }
 };
-

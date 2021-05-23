@@ -1,13 +1,12 @@
 require('dotenv').config();
-const { configuration } = require('./src/config/jwt-configuration');
+
 const express = require('express');
 const app = express();
-const routes = require('./routes');
 const {middlewareGlobal, checkCsrfError, csrfMiddleware} = require('./src/middlewares/middleware')
 const path = require('path');
 
 const flash = require('connect-flash'); // mensagens que se apagam depois de visualizadas, talvez seja útil
-const csrf = require('csurf'); // criptografia
+const csrf = require('csurf'); 
 const helmet = require('helmet'); // para segurança, recomendado pelo Express
 
 // configuração do banco (já online)
@@ -44,8 +43,11 @@ app.use(express.json());
 app.use(middlewareGlobal);
 //app.use(checkCsrfError);
 //app.use(csrfMiddleware);
-app.use(routes); 
 
+const routes = require('./src/routes/index');
+const { configuration } = require('./src/config/jwt-configuration');
+
+app.use('/', configuration.unless({ path: ['/online', '/user/signin', '/user/signup'] }), routes);
 app.on("mongoDB", () => {
   app.listen(PORT, function(err){ 
     if (err) 

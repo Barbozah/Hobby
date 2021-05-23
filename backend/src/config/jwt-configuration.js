@@ -5,7 +5,7 @@ const { JWT_SECRET, JWT_EXPIRATION_TIME } = process.env;
 
 const getToken = (user) => {
   const payload = {
-    id: user.id,
+    _id: user._id,
     lastLogin: user.lastLogin
   };
   const token = jwt.sign(payload, JWT_SECRET, {
@@ -16,7 +16,7 @@ const getToken = (user) => {
 };
 
 const configuration = expressJWT({
-  secret: JWT_SECRET, algorithms: ['SHA256'],
+  secret: JWT_SECRET, algorithms: ['HS256']
 });
 
 module.exports = { getToken, configuration };
