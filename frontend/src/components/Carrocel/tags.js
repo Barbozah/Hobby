@@ -9,8 +9,8 @@ export default function Tags(props){
     return(
         
         <div className="mb-2">
-            {props.tags.map(tag =>(
-                <Button variant="secondary" className="botaoTag btn-sm m-1">{tag}</Button>
+            {props.tags.map((tag,index) =>(
+                <Button variant="secondary" className="botaoTag btn-sm m-1" key={index}>{tag}</Button>
             ))}
         </div>
            
