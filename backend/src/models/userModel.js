@@ -5,10 +5,12 @@ const crypto = require('crypto');
 const SALT = 16;
 const { getToken } = require('../config/jwt-configuration');
 
+const SettingsSchema = new mongoose.Schema({
+    field1: String,
+    field2: String
+});
+
 const UserSchema = new mongoose.Schema({
-    id: {
-        type: String,
-    },
     name: {
         type: String,
         require: [true, '{PATH} é um campo obrigatório'],
@@ -24,12 +26,12 @@ const UserSchema = new mongoose.Schema({
         require: [true, '{PATH} é um campo obrigatório'],
         validate: validators.isLength({ message: 'A senha deve ter tamanho entre 6 e 8' }, (6, 8)),
     },
-    gameList: [String],
-    wishList: [String],
-    preferences:[String],
+    gameList: [mongoose.Types.ObjectId],
+    wishList: [mongoose.Types.ObjectId],
+    settings: SettingsSchema,
     status: Boolean,
     salt: String,
-    lastLogin: Date,
+    lastLogin: Date, 
     token: String,
 }, { timestamps: true });
 UserSchema.plugin(unique, { message: '{PATH} já existente' });
@@ -42,7 +44,6 @@ UserSchema.pre('save', function (next) {
     
         if (!this.isModified('password')) return next();
 
-        this.id = this._id.toHexString().slice(0, 4);
         this.status = true;
         this.salt = crypto.randomBytes(SALT).toString('hex');
         const hash = crypto.pbkdf2Sync(this.password, this.salt, 10000, 32, 'sha512').toString('hex');
