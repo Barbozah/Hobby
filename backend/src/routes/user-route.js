@@ -4,7 +4,9 @@ const {
   signUp,
   findAll,
   alterPassword,
+  alterSettings,
   deactivate,
+  alterEmail,
 } = require('../controllers/userController');
 
 module.exports = (express) => {
@@ -18,7 +20,12 @@ module.exports = (express) => {
 
   router.post('/alterPassword', alterPassword);
 
+  router.post('/alterEmail', alterEmail);
+
+  router.post('/alterSettings', alterSettings);
+
   router.get('/:_id', findById);
+  
   router.post('/:_id', deactivate);
 
   return router;
