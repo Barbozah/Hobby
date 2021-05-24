@@ -4,6 +4,7 @@ const {
 } = require('../exceptions/exception');
 const { getToken } = require('../config/jwt-configuration');
 const UserSchema = require('../models/userModel');
+const GameSchema = require('../models/gameModel');
 
 
 module.exports.findById = async (req, res, next) => {
@@ -24,7 +25,7 @@ module.exports.findAll = async (req, res, next) => {
     try {
         const { query: { page, size } } = req;
 
-        const users = await UserSchema.find({status: true}).skip((page || 0) * (size || 10)).lean();
+        const users = await UserSchema.find({ status: true }).skip((page || 0) * (size || 10)).lean();
 
         res.json(users);
     } catch (error) {
@@ -74,7 +75,7 @@ module.exports.signUp = async (req, res, next) => {
 
 module.exports.alterPassword = async (req, res, next) => {
     try {
-        const { body: { _id, newPassword} } = req;
+        const { body: { _id, newPassword } } = req;
 
         const user = await UserSchema.findOne({ _id: _id });
 
@@ -126,6 +127,47 @@ module.exports.alterEmail = async (req, res, next) => {
         next(error);
     }
 };
+
+module.exports.addWishList = async (req, res, next) => {
+    try {
+        const { body: { user_id, game_id } } = req;
+
+        const user = await UserSchema.findOne({ _id: user_id });
+        const game = await GameSchema.findOne({ _id: game_id });
+
+        if (!user || !user.status) { throw new InvalidCredentials(); }
+        if (!game || !game.status) { throw new ResourceNotFound(); }
+
+        user.wishList.push(game_id);
+
+        user.save();
+
+        res.json(user);
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports.removeWishList = async (req, res, next) => {
+    try {
+        const { body: { user_id, game_id } } = req;
+
+        const user = await UserSchema.findOne({ _id: user_id });
+        const game = await GameSchema.findOne({ _id: game_id });
+
+        if (!user || !user.status) { throw new InvalidCredentials(); }
+        if (!game || !game.status) { throw new ResourceNotFound(); }
+
+        user.wishList.splice(user.wishList.indexOf(game_id), 1);
+
+        user.save();
+
+        res.json(user);
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 module.exports.deactivate = async (req, res, next) => {
     try {

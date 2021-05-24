@@ -7,6 +7,8 @@ const {
   alterSettings,
   deactivate,
   alterEmail,
+  addWishList,
+  removeWishList,
 } = require('../controllers/userController');
 
 module.exports = (express) => {
@@ -24,8 +26,12 @@ module.exports = (express) => {
 
   router.post('/alterSettings', alterSettings);
 
+  router.post('/addWishList', addWishList);
+
+  router.post('/removeWishList', removeWishList);
+
   router.get('/:_id', findById);
-  
+
   router.post('/:_id', deactivate);
 
   return router;
