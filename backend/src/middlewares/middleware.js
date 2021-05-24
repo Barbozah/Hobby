@@ -6,7 +6,7 @@ exports.middlewareGlobal = (req, res, next) => {
 }
 
 exports.middlewareGlobal = (req, res, next) => {
-    console.log("0000000000000000000000000000000000000000000000")
+    console.log("______________________________________________________")
     next();
 }
 
