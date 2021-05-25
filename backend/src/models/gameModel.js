@@ -8,7 +8,7 @@ const RatingSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const GameSchema = new mongoose.Schema({
-    title: { type: String},
+    title: { type: String },
     developer: { type: String },
     publisher: { type: String },
     release: { type: Date },
@@ -17,26 +17,30 @@ const GameSchema = new mongoose.Schema({
     requirements: { type: String },
     price: { type: String },
     discount: Number,
+    starsAverage: Number,
     ratings: { type: [RatingSchema] },
     status: Boolean,
 }, { timestamps: true });
 GameSchema.plugin(unique, { message: '{PATH} já existente' });
 
-GameSchema.virtual('starsAverage').get(function () {
-   // GameSchema.ratings.reduce( (x,y) => {x + y.stars} )
-});
-
-
 GameSchema.pre('save', function (next) {
     try {
-
         this.status = true;
+       
+        this.starsAverage = this.calcAverage();
 
         next();
     } catch (e) {
         next(e);
     }
 });
+
+GameSchema.methods.calcAverage = function(){
+    let amount = this.ratings.reduce(
+        (x, y) => x + y.stars
+    ,0);
+    return amount/this.ratings.length;
+}
 
 module.exports = mongoose.models.Game || mongoose.model('Game', GameSchema);
 

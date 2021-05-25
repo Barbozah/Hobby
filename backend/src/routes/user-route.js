@@ -9,6 +9,8 @@ const {
   alterEmail,
   addWishList,
   removeWishList,
+  addGameList,
+  removeGameList,
 } = require('../controllers/userController');
 
 module.exports = (express) => {
@@ -29,6 +31,10 @@ module.exports = (express) => {
   router.post('/addWishList', addWishList);
 
   router.post('/removeWishList', removeWishList);
+
+  router.post('/addGameList', addGameList);
+
+  router.post('/removeGameList', removeGameList);
 
   router.get('/:_id', findById);
 

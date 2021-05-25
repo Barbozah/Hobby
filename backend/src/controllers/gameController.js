@@ -4,6 +4,7 @@ const {
 } = require('../exceptions/exception');
 
 const GameSchema = require('../models/gameModel');
+const UserSchema = require('../models/userModel');
 
 module.exports.findById = async (req, res, next) => {
     try {
@@ -63,7 +64,9 @@ module.exports.update = async (req, res, next) => {
 
         if (!game || !game.status) { throw new ResourceNotFound(); }
 
-        for (let field in body) { game[field] = body[field]; }
+        for (let field in body) { 
+            if(field =! "ratings") game[field] = body[field];
+         }
 
         game.save();
 
@@ -93,20 +96,32 @@ module.exports.deactivate = async (req, res, next) => {
     }
 };
 
-module.exports.rating = async (req, res, next) => {
+module.exports.addRatings = async (req, res, next) => {
     try {
-        const { body } = req;
+        const game_id = req.body.game_id;
+        const ratings = req.body.ratings;
+        const user_id = req.body.ratings.user_id;
 
-        const existingGame = await GameSchema.findOne({ title: body.title });
-        if (existingUser) { throw new AlreadyExists("Email já cadastrado."); }
-        
+        const user = await UserSchema.findOne({ _id: user_id });
+        let game = await GameSchema.findOne({ _id: game_id });
+
         if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado"); }
-        if (!game || !game.status) { throw new ResourceNotFound(); }
+        if (!game || !game.status) { throw new ResourceNotFound("Jogo não encontrado"); }
 
-        let game = new GameSchema(body);
+        function searchIndex() {
+            for (let index in game.ratings) {
+                if (game.ratings[index].user_id == user_id) {
+                    return index;
+                }
+            }
+            return false;
+        }
 
-        console.log("game", game);
-
+        const index = searchIndex();
+        if (index) { game.ratings.splice(index, 1); }
+        
+        game.ratings.push(ratings)
+        
         game = await game.save();
 
         res.json(game);

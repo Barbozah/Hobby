@@ -3,7 +3,9 @@ const {
   create,
   findAll,
   update,
-  deactivate
+  deactivate,
+  Addratings,
+  addRatings,
 } = require('../controllers/gameController');
 
 module.exports = (express) => {
@@ -14,6 +16,8 @@ module.exports = (express) => {
   router.post('/create', create);
 
   router.post('/update', update);
+
+  router.post('/addRatings', addRatings);
 
   router.get('/:_id', findById);
   
