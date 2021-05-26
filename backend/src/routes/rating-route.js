@@ -1,23 +1,23 @@
 const {
   findById,
   create,
-  findAll,
+  findAllByGameId,
+  findByUserId,
   update,
-  deactivate,
-} = require('../controllers/gameController');
+} = require('../controllers/ratingController');
 
 module.exports = (express) => {
   const router = express.Router();
 
-  router.get('/', findAll);
+  router.get('/', findAllByGameId);
 
   router.post('/create', create);
 
   router.post('/update', update);
 
   router.get('/:_id', findById);
-  
-  router.post('/:_id', deactivate); 
+
+  router.get('/user/:_id', findByUserId);
 
   return router;
 };
