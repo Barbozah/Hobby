@@ -2,6 +2,7 @@ import React from 'react';
 import {Container, Card} from 'react-bootstrap';
 import Carrocel from '../../components/Carrocel';
 import CarrocelSec from '../../components/CarrocelSec';//carrocel secundário
+import Sidenav from '../../components/Sidebar/Sidenav';
 
 
 
@@ -16,7 +17,8 @@ export default function Home() {
                   , 
                   {url:"https://i.ytimg.com/vi/SXvQ1nK4oxk/maxresdefault.jpg",
                   title:"Red Dead Redemption 2", price: 20.55, tags:["Ação", "Aventura", "Mundo aberto"]}];
-  return (
+  return (<>
+    <Sidenav />
     <Container>
       <Card className="px-1 w-100 bg-transparent border-0 ml-5">
         <Carrocel dados={dados}/>
@@ -36,5 +38,6 @@ export default function Home() {
       
         
     </Container>
+    </>
   );
 }

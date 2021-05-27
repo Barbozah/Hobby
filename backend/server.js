@@ -9,6 +9,7 @@ const path = require('path');
 const flash = require('connect-flash'); // mensagens que se apagam depois de visualizadas, talvez seja útil
 const csrf = require('csurf'); // criptografia
 const helmet = require('helmet'); // para segurança, recomendado pelo Express
+const cors = require('cors');
 
 // configuração do banco (já online)
 const PORT = process.env.PORT || 3000;
@@ -45,6 +46,7 @@ app.use(middlewareGlobal);
 //app.use(checkCsrfError);
 //app.use(csrfMiddleware);
 app.use(routes); 
+app.use(cors());
 
 app.on("mongoDB", () => {
   app.listen(PORT, function(err){ 
