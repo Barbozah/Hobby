@@ -3,21 +3,11 @@ import {Container, Card} from 'react-bootstrap';
 import Carrocel from '../../components/Carrocel';
 import CarrocelSec from '../../components/CarrocelSec';//carrocel secundário
 import Sidenav from '../../components/Sidebar/Sidenav';
-import {useHistory} from 'react-router-dom';
+
 
 
 
 export default function Home() {
-
-  const history = useHistory();
-
-  const token = localStorage.getItem('token');
-
-  if(token === null){
-    history.push('/');
-  }
-
-
 
 
 

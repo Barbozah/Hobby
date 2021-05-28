@@ -27,9 +27,9 @@ export default function Cadastro() {
         password
       };
       try{
-        const response = await api.post('/signup', data);
+        await api.post('/signup', data);
 
-        //console.log(response);
+        
         const token = await api.post('/signin', {email: email, password: password});
 
         localStorage.setItem('token', token.access_token);
