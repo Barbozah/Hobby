@@ -48,12 +48,14 @@ exports.signIn = async function (req, res) {
 
               const jwt = require('jsonwebtoken');
               const expiresIn = process.env.tokenExpiresIn;
+              user.password = undefined;
 
               const token = jwt.sign({ email }, process.env.SECRET, { expiresIn: 300  });
               return res.status(201).json(
                   {
                       access_token: token,
-                      expiresIn: expiresIn
+                      expiresIn: expiresIn,
+                      user
                   }
               );
         });

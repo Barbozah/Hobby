@@ -1,28 +1,42 @@
 import React, {useState} from 'react';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
+import {useHistory} from 'react-router-dom';
 import Logo from '../../components/Logo';
+import api from '../../service/api';
 import './style.css';
 
 export default function Login() {
 
     const [validated, setValidated] = useState(false);
+    const history = useHistory();
 
-    const handleSubmit = (event) => {
+    async function handleSubmit(event){
       event.preventDefault();
       const form = event.currentTarget;
       if (form.checkValidity() === false) {
         event.stopPropagation();
       }else{
         const email = document.getElementById('email').value;
-        const senha = document.getElementById('senha').value;
+        const password = document.getElementById('senha').value;
   
         const data = {
           email,
-          senha
+          password
         };
   
-        alert(data);
-        //após isso, mandar requisição para a API/backend e redirecionar para a página principal
+        try{
+
+         const response = api.post('signin',data);
+          
+         localStorage.setItem('token', response.access_token);
+         history.push('/home');
+
+        }catch(e){
+          alert(e);
+        }
+
+
+
         
       }
     
@@ -57,10 +71,12 @@ export default function Login() {
                 required
                 type="password"
                 placeholder="Senha"
-                className="rounded-0 input-login text-light border-secondary" 
+                className="rounded-0 input-login text-light border-secondary"
+                minlength={6}
+                maxLength={8}
                 />
                 <Form.Control.Feedback type="invalid">
-                Por favor, informe uma senha.
+                Por favor, informe uma senha entre 6 e 8 caracteres.
                 </Form.Control.Feedback>
             </Form.Group>
             <Button 

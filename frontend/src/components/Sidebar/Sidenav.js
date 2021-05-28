@@ -1,16 +1,24 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { SidebarData } from './SidebarData'
 import { IconContext } from 'react-icons'
-import { FaBars } from 'react-icons/fa'
+import { FaBars, FaPowerOff } from 'react-icons/fa'
 import { AiOutlineClose } from 'react-icons/ai'
 import Logo from '../Logo';
 import './Sidenav.css'
 
 export default function Sidenav() {
   const [sidebar, setSidebar] = useState(false)
+  const history = useHistory();
 
   const toggleSidebar = () => setSidebar(!sidebar)
+
+  function logout(){
+    localStorage.clear();
+    history.push('/');
+  }
+
+
 
   return (
     <>
@@ -41,6 +49,12 @@ export default function Sidenav() {
                 </li>
               );
             })}
+            <li className="nav-text">
+              <div onClick={logout}>
+              <FaPowerOff/>
+              <span>Sair</span>
+              </div>
+            </li>
           </ul>
         </nav>
       </IconContext.Provider>

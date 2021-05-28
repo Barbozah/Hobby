@@ -45,8 +45,9 @@ app.use(express.json());
 app.use(middlewareGlobal);
 //app.use(checkCsrfError);
 //app.use(csrfMiddleware);
-app.use(routes); 
 app.use(cors());
+app.use(routes); 
+
 
 app.on("mongoDB", () => {
   app.listen(PORT, function(err){ 

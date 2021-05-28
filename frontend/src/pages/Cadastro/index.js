@@ -1,34 +1,46 @@
 import React, {useState} from 'react';
 import {Container, Button, Form, Row, Col} from 'react-bootstrap';
+import {useHistory} from 'react-router-dom';
 import './style.css';
 import Logo from '../../components/Logo';
-
+import api from '../../service/api';
 
 export default function Cadastro() {
 
  
   const [validated, setValidated] = useState(false);
+  const history = useHistory();
 
-  const handleSubmit = (event) => {
+  async function handleSubmit(event){
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.stopPropagation();
     }else{
-      const nome = document.getElementById('nome').value;
-      const nome_exib = document.getElementById('nome_exib').value;
+      const name = document.getElementById('nome').value;
       const email = document.getElementById('email').value;
-      const senha = document.getElementById('senha').value;
+      const password = document.getElementById('senha').value;
 
       const data = {
-        nome,
-        nome_exib,
+        name,
         email,
-        senha
+        password
       };
+      try{
+        const response = await api.post('/signup', data);
 
-      alert(data);
-      //após isso, mandar requisição para a API/backend e redirecionar para a página principal
+        //console.log(response);
+        const token = await api.post('/signin', {email: email, password: password});
+
+        localStorage.setItem('token', token.access_token);
+        history.push('/home');
+      
+        
+      }catch(e){
+        alert(e);
+      }
+      
+  
       
     }
   
@@ -62,17 +74,7 @@ export default function Cadastro() {
                 Por favor, digite Seu nome.
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group  controlId="nome_exib" className="mt-2" >
-              <Form.Control
-                required
-                type="text"
-                placeholder="Nome de exibição"
-                className="rounded-0 input-cadastro text-light border-secondary" 
-              />
-              <Form.Control.Feedback type="invalid">
-                Por favor, digite o nome que será exibido dentro da plataforma.
-              </Form.Control.Feedback>
-            </Form.Group>
+           
             <Form.Group  controlId="email" className="mt-2" >
               <Form.Control
                 required
@@ -91,9 +93,11 @@ export default function Cadastro() {
                 type="password"
                 placeholder="Senha"
                 className="rounded-0 input-cadastro text-light border-secondary" 
+                minlength={6}
+                maxLength={8}
               />
               <Form.Control.Feedback type="invalid">
-                Por favor, informe uma senha.
+                Por favor, informe uma senha contendo de 6 a 8 caracteres.
               </Form.Control.Feedback>
             </Form.Group>
           <Button 

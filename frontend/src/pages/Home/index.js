@@ -3,10 +3,24 @@ import {Container, Card} from 'react-bootstrap';
 import Carrocel from '../../components/Carrocel';
 import CarrocelSec from '../../components/CarrocelSec';//carrocel secundário
 import Sidenav from '../../components/Sidebar/Sidenav';
+import {useHistory} from 'react-router-dom';
 
 
 
 export default function Home() {
+
+  const history = useHistory();
+
+  const token = localStorage.getItem('token');
+
+  if(token === null){
+    history.push('/');
+  }
+
+
+
+
+
   const dados = [{url:"https://cdn.pocket-lint.com/r/s/1200x/assets/images/134398-games-review-batman-arkham-knight-review-image1-8HL7SgyOGl.jpg",
                   title:"Batman Arkham City Game of the year edition", price: 20.00, tags:["Ação", "Aventura", "Mundo aberto"]}, 
                   {url:"https://i.ytimg.com/vi/SXvQ1nK4oxk/maxresdefault.jpg",
