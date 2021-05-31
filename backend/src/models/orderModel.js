@@ -3,35 +3,38 @@ const unique = require('mongoose-unique-validator');
 
 const OrderSchema = new mongoose.Schema({
     user_id: { type: mongoose.Types.ObjectId },
-    itemList: {
-        game_id: { type: [mongoose.Types.ObjectId] },
+    itemList: [{
+        game_id: { type: mongoose.Types.ObjectId },
         price: { type: Number },
         discount: { type: Number },
-    },
-    status: {
+        _id: false,
+    }],
+    status: [{
         name: {
             type: String,
             enum: ["waiting", "approved", "canceled"]
         },
-        date: { type: String },
-    },
+        date: { type: Date },
+        _id: false,
+    }],
     payment: {
         type: String,
         enum: ["credit card"],
     },
     amount: { type: Number },
-}, { timestamps: true });
+});
 
 OrderSchema.plugin(unique, { message: '{PATH} já existente' });
 
 OrderSchema.pre('save', function (next) {
     try {
 
+        this.amount = this.itemList.reduce((amount, game) => amount + game.price - game.discount, 0);
+
         next();
     } catch (e) {
         next(e);
     }
-});
-// Um cliente não pode comprar um mesmo jogo 2 vezes, numa mesma compra ou em compras diferentes
+}); 
 
 module.exports = mongoose.models.Order || mongoose.model('Order', OrderSchema);
