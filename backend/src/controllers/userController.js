@@ -11,11 +11,12 @@ module.exports.findById = async (req, res, next) => {
     try {
         let { params: { _id } } = req;
 
-        let user = await UserSchema.findOne({ _id }).select('name status');
+        let user = await UserSchema.findOne({ _id }).select('-password -salt -__v');
 
         if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado"); }
+        
+        res.status(200).json(user);
 
-        res.json(user);
     } catch (error) {
         next(error);
     }
@@ -29,7 +30,7 @@ module.exports.findAll = async (req, res, next) => {
         .skip((page || 0) * (size || 10)).lean()
         .select('_id email');
 
-        res.json(users);
+        res.status(200).json(users);
     } catch (error) {
         next(error);
     }
@@ -50,9 +51,9 @@ module.exports.signIn = async (req, res, next) => {
         user = await UserSchema.findByIdAndUpdate({ _id: user._id },
             {
                 $set: { lastLogin: Date.now(), token: getToken(user) },
-            }, { new: true, select: '_id token'});
+            }, { new: true, select: 'token'});
 
-        res.json(user);
+            res.status(200).json(user);
     } catch (error) {
         next(error);
     }
@@ -68,19 +69,9 @@ module.exports.signUp = async (req, res, next) => {
 
         let user = new UserSchema(body);
 
-        //user = await 
         user.save();
-
-/*         user = {
-            user_id: user.id, 
-            user_name: user.name, 
-            user_email: user.email, 
-            user_status: user.status, 
-        } 
-
-        res.json(user);
-        */
-        res.status(200).end("Usuário cadastrado com sucesso.")
+        
+        res.status(200).json("Usuário cadastrado com sucesso.")
 
     } catch (error) {
         next(error);
@@ -97,9 +88,7 @@ module.exports.alterPassword = async (req, res, next) => {
 
         user.password = newPassword;
 
-        //user = await user.save();
-        //res.json(user);
-        res.status(200).end("Senha Atualizada com sucesso.")
+        res.status(200).json("Senha Atualizada com sucesso.")
 
     } catch (error) {
         next(error);
@@ -119,14 +108,7 @@ module.exports.alterSettings = async (req, res, next) => {
 
         user.save();
 
-/*         user = {
-            user_id: user.id, 
-            user_settings: user.settings, 
-        } 
-
-        res.json(user); */
-
-        res.status(200).end("Configurações atualizadas com sucesso.")
+        res.status(200).json("Configurações atualizadas com sucesso.")
     } catch (error) {
         next(error);
     }
@@ -144,9 +126,8 @@ module.exports.alterEmail = async (req, res, next) => {
 
         user.save();
 
-        res.status(200).end("E-mail alterado com sucesso.")
+        res.status(200).json("E-mail atualizado com sucesso.")
 
-        //res.json(user);
     } catch (error) {
         next(error);
     }
@@ -168,10 +149,7 @@ module.exports.addWishList = async (req, res, next) => {
 
         user.save();
 
-        res.json({
-            user_id: user.id,
-            user_wishlist: user.wishList
-        });
+        res.status(200).json("Jogo adicionado com sucesso a lista de desejos.");
 
     } catch (error) {
         next(error);
@@ -192,10 +170,7 @@ module.exports.removeWishList = async (req, res, next) => {
 
         user.save();
 
-        res.json({
-            user_id: user.id,
-            user_wishlist: user.wishList
-        });
+        res.status(200).json("Jogo removido com sucesso da lista de desejos.");
 
     } catch (error) {
         next(error);
@@ -218,12 +193,8 @@ module.exports.addGameList = async (req, res, next) => {
 
         user.save();
 
-        res.json({
-            user_id: user.id,
-            user_gamelist: user.gameList
-        });
+        res.status(200).json("Jogo adicionado com sucesso a biblioteca do usuário.");
 
-        res.json(user.gameList);
     } catch (error) {
         next(error);
     }
@@ -243,10 +214,7 @@ module.exports.removeGameList = async (req, res, next) => {
 
         user.save();
 
-        res.json({
-            user_id: user.id,
-            user_gamelist: user.gameList
-        });
+        res.json("Jogo removido com sucesso da biblioteca do usuário.");
 
     } catch (error) {
         next(error);
@@ -265,7 +233,7 @@ module.exports.deactivate = async (req, res, next) => {
 
         user.save();
 
-        res.json(user);
+        res.status(200).json("Usuário desativado com sucesso.");
     } catch (error) {
         next(error);
     }
