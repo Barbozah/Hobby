@@ -11,19 +11,10 @@ module.exports.findById = async (req, res, next) => {
     try {
         let { params: { _id } } = req;
 
-        let user = await UserSchema.findOne({ _id });
+        let user = await UserSchema.findOne({ _id }).select('name status');
 
         if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado"); }
 
-        user = {
-            user_id: user.id, 
-            user_name: user.name, 
-            user_email: user.email, 
-            user_settings: user.settings, 
-            user_wishList: user.wishList, 
-            user_gameList: user.gameList,
-            user_status: user.status, 
-        }
         res.json(user);
     } catch (error) {
         next(error);
@@ -34,7 +25,9 @@ module.exports.findAll = async (req, res, next) => {
     try {
         const { query: { page, size } } = req;
 
-        const users = await UserSchema.find({ status: true }).skip((page || 0) * (size || 10)).lean();
+        const users = await UserSchema.find({ status: true })
+        .skip((page || 0) * (size || 10)).lean()
+        .select('_id email');
 
         res.json(users);
     } catch (error) {
@@ -57,7 +50,7 @@ module.exports.signIn = async (req, res, next) => {
         user = await UserSchema.findByIdAndUpdate({ _id: user._id },
             {
                 $set: { lastLogin: Date.now(), token: getToken(user) },
-            }, { new: true });
+            }, { new: true, select: '_id token'});
 
         res.json(user);
     } catch (error) {
@@ -75,8 +68,20 @@ module.exports.signUp = async (req, res, next) => {
 
         let user = new UserSchema(body);
 
-        user = await user.save();
+        //user = await 
+        user.save();
+
+/*         user = {
+            user_id: user.id, 
+            user_name: user.name, 
+            user_email: user.email, 
+            user_status: user.status, 
+        } 
+
         res.json(user);
+        */
+        res.status(200).end("Usuário cadastrado com sucesso.")
+
     } catch (error) {
         next(error);
     }
@@ -86,15 +91,16 @@ module.exports.alterPassword = async (req, res, next) => {
     try {
         const { body: { _id, newPassword } } = req;
 
-        const user = await UserSchema.findOne({ _id: _id });
+        let user = await UserSchema.findOne({ _id: _id }).select('name status');
 
         if (!user || !user.status) { throw new InvalidCredentials(); }
 
         user.password = newPassword;
 
-        user.save();
+        //user = await user.save();
+        //res.json(user);
+        res.status(200).end("Senha Atualizada com sucesso.")
 
-        res.json(user);
     } catch (error) {
         next(error);
     }
@@ -105,7 +111,7 @@ module.exports.alterSettings = async (req, res, next) => {
 
         const { body: { _id, settings } } = req;
 
-        const user = await UserSchema.findOne({ _id: _id });
+        let user = await UserSchema.findOne({ _id: _id });
 
         if (!user || !user.status) { throw new InvalidCredentials(); }
 
@@ -113,7 +119,14 @@ module.exports.alterSettings = async (req, res, next) => {
 
         user.save();
 
-        res.json(user);
+/*         user = {
+            user_id: user.id, 
+            user_settings: user.settings, 
+        } 
+
+        res.json(user); */
+
+        res.status(200).end("Configurações atualizadas com sucesso.")
     } catch (error) {
         next(error);
     }
@@ -131,7 +144,9 @@ module.exports.alterEmail = async (req, res, next) => {
 
         user.save();
 
-        res.json(user);
+        res.status(200).end("E-mail alterado com sucesso.")
+
+        //res.json(user);
     } catch (error) {
         next(error);
     }
