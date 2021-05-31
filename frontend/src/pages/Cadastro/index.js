@@ -16,6 +16,7 @@ export default function Cadastro() {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.stopPropagation();
+      setValidated(true);
     }else{
       const name = document.getElementById('nome').value;
       const email = document.getElementById('email').value;
@@ -27,9 +28,9 @@ export default function Cadastro() {
         password
       };
       try{
-        await api.post('/signup', data);
+        const response = await api.post('/signup', data);
 
-        
+        console.log(response);  
         const token = await api.post('/signin', {email: email, password: password});
 
         localStorage.setItem('token', token.access_token);
@@ -44,7 +45,7 @@ export default function Cadastro() {
       
     }
   
-    setValidated(true);
+
   };
 
 
@@ -93,7 +94,7 @@ export default function Cadastro() {
                 type="password"
                 placeholder="Senha"
                 className="rounded-0 input-cadastro text-light border-secondary" 
-                minlength={6}
+                minLength={6}
                 maxLength={8}
               />
               <Form.Control.Feedback type="invalid">

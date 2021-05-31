@@ -15,6 +15,7 @@ export default function Login() {
       const form = event.currentTarget;
       if (form.checkValidity() === false) {
         event.stopPropagation();
+        setValidated(true);
       }else{
         const email = document.getElementById('email').value;
         const password = document.getElementById('senha').value;
@@ -26,7 +27,7 @@ export default function Login() {
   
         try{
 
-         const response = api.post('signin',data);
+         const response = await api.post('signin',data);
           
          localStorage.setItem('token', response.access_token);
          history.push('/home');
@@ -40,7 +41,7 @@ export default function Login() {
         
       }
     
-      setValidated(true);
+      
     };
 
 
@@ -72,7 +73,7 @@ export default function Login() {
                 type="password"
                 placeholder="Senha"
                 className="rounded-0 input-login text-light border-secondary"
-                minlength={6}
+                minLength={6}
                 maxLength={8}
                 />
                 <Form.Control.Feedback type="invalid">
