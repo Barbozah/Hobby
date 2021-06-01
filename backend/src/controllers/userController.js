@@ -87,7 +87,7 @@ module.exports.alterPassword = async (req, res, next) => {
 
         let user = await UserSchema.findOne({ _id: _id }).select('name status');
 
-        if (!user || !user.status) { throw new InvalidCredentials(); }
+        if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado."); }
 
         user.password = newPassword;
 
@@ -105,7 +105,7 @@ module.exports.alterSettings = async (req, res, next) => {
 
         let user = await UserSchema.findOne({ _id: _id });
 
-        if (!user || !user.status) { throw new InvalidCredentials(); }
+        if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado."); }
 
         user.settings = settings;
 
@@ -123,7 +123,7 @@ module.exports.alterEmail = async (req, res, next) => {
 
         const user = await UserSchema.findOne({ _id: _id });
 
-        if (!user || !user.status) { throw new InvalidCredentials(); }
+if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado."); }
 
         user.email = newEmail;
 
@@ -143,8 +143,8 @@ module.exports.addWishList = async (req, res, next) => {
         const user = await UserSchema.findOne({ _id: user_id });
         const game = await GameSchema.findOne({ _id: game_id });
 
-        if (!user || !user.status) { throw new InvalidCredentials(); }
-        if (!game || !game.status) { throw new ResourceNotFound(); }
+        if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado."); }
+        if (!game || !game.status) { throw new ResourceNotFound("Jogo não encontrado."); }
 
         if (user.wishList.indexOf(game_id) == -1) {
             user.wishList.push(game_id);
@@ -166,8 +166,8 @@ module.exports.removeWishList = async (req, res, next) => {
         const user = await UserSchema.findOne({ _id: user_id });
         const game = await GameSchema.findOne({ _id: game_id });
 
-        if (!user || !user.status) { throw new InvalidCredentials(); }
-        if (!game || !game.status) { throw new ResourceNotFound(); }
+        if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado."); }
+        if (!game || !game.status) { throw new ResourceNotFound("Jogo não encontrado."); }
 
         user.wishList.splice(user.wishList.indexOf(game_id), 1);
 
@@ -187,8 +187,8 @@ module.exports.addGameList = async (req, res, next) => {
         const user = await UserSchema.findOne({ _id: user_id });
         const game = await GameSchema.findOne({ _id: game_id });
 
-        if (!user || !user.status) { throw new InvalidCredentials(); }
-        if (!game || !game.status) { throw new ResourceNotFound(); }
+        if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado."); }
+        if (!game || !game.status) { throw new ResourceNotFound("Jogo não encontrado."); }
 
         if (user.gameList.indexOf(game_id) == -1) {
             user.gameList.push(game_id);
@@ -210,8 +210,8 @@ module.exports.removeGameList = async (req, res, next) => {
         const user = await UserSchema.findOne({ _id: user_id });
         const game = await GameSchema.findOne({ _id: game_id });
 
-        if (!user || !user.status) { throw new InvalidCredentials(); }
-        if (!game || !game.status) { throw new ResourceNotFound(); }
+        if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado."); }
+        if (!game || !game.status) { throw new ResourceNotFound("Jogo não encontrado."); }
 
         user.gameList.splice(user.gameList.indexOf(game_id), 1);
 
@@ -230,7 +230,7 @@ module.exports.deactivate = async (req, res, next) => {
 
         const user = await UserSchema.findOne({ _id: _id });
 
-        if (!user || !user.status) { throw new InvalidCredentials(); }
+        if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado."); }
 
         user.status = false;
 
