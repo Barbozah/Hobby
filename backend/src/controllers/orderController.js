@@ -15,7 +15,7 @@ module.exports.findById = async (req, res, next) => {
 
         if (!order) { throw new ResourceNotFound("Pedido não encontrado."); }
 
-        res.json(order);
+        res.status(200).json(order);
 
     } catch (error) {
         next(error);
@@ -26,9 +26,14 @@ module.exports.findAllByUserId = async (req, res, next) => {
     try {
         const { query: { page, size, user_id } } = req;
 
-        const orderArray = await orderSchema.find({ user_id: user_id }).skip((page || 0) * (size || 10)).lean();
+        const orders = await orderSchema.find({ user_id: user_id })
+        .select('-__v')
+        .skip((page || 0) * (size || 10))
+        .lean();
 
-        res.json(orderArray);
+        if (!orders) { throw new ResourceNotFound("Nenhum pedido encontrado."); }
+
+        res.status(200).json(orders);
 
     } catch (error) {
         next(error);
@@ -42,12 +47,12 @@ module.exports.create = async (req, res, next) => {
         const { body: { user_id, itemList } } = req;
 
         const user = await UserSchema.findOne({ _id: user_id });
-        if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado"); }
+        if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado."); }
 
         for (let i = 0; i < itemList.length; i++) {
             for (let j = 0; j < user.gameList.length; j++) {
                 if (itemList[i] == user.gameList[j]) {
-                    return res.status(406).end("não pode comprar novamente um jogo que já possui");
+                    return res.status(406).end("Não é permitido comprar um jogo que já possui.");
                 }
             }
         }
@@ -69,7 +74,10 @@ module.exports.create = async (req, res, next) => {
 
         order = await order.save();
 
-        res.json(order);
+        res.status(200).json({
+            message: "Pedido cadastrado com sucesso.",
+            _id: order._id
+        });
 
     } catch (error) {
         next(error);
@@ -80,13 +88,12 @@ module.exports.updateStatus = async (req, res, next) => {
     try {
         let { body: { _id, status } } = req;
 
-        let order = await orderSchema.findOne({ _id });
+        let order = await orderSchema.findOne({ _id }).select('status');
         if (!order) { throw new ResourceNotFound("Pedido não encontrado."); }
 
-        // Um mesmo status não pode ser adicionado mais que 1 vez
         for (let index = 0; index < order.status.length; index++) {
             if (order.status[index].name == status) {
-                return res.json(order);
+                return res.end("Pedido já " + status);
             }
         }
 
@@ -98,11 +105,10 @@ module.exports.updateStatus = async (req, res, next) => {
         order = await orderSchema.findOneAndUpdate(
             { _id: _id },
             { $push: { status: status } },
-            { new: true }
+            { new: true, select: '-__v', runValidators: true}
         );
-        if (!order) { throw new ResourceNotFound(); }
 
-        res.json(order);
+        res.status(200).json(order);
 
     } catch (error) {
         next(error);

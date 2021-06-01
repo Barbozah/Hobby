@@ -10,11 +10,11 @@ module.exports.findById = async (req, res, next) => {
     try {
         let { params: { _id } } = req;
 
-        const game = await GameSchema.findOne({ _id });
+        const game = await GameSchema.findOne({ _id }).select('-__v');
 
-        if (!game || !game.status) { throw new ResourceNotFound(); }
+        if (!game || !game.status) { throw new ResourceNotFound("Jogo não encontrado."); }
 
-        res.json(game);
+        res.status(200).json(game);
 
     } catch (error) {
         next(error);
@@ -25,9 +25,14 @@ module.exports.findAll = async (req, res, next) => {
     try {
         const { query: { page, size } } = req;
 
-        const games = await GameSchema.find({ status: true }).skip((page || 0) * (size || 10)).lean();
+        const games = await GameSchema.find({ status: true })
+        .select('_id')
+        .skip((page || 0) * (size || 10))
+        .lean();
 
-        res.json(games);
+        if (!games) { throw new ResourceNotFound("Nenhum jogo encontrado."); }
+
+        res.status(200).json(games);
 
     } catch (error) {
         next(error);
@@ -46,7 +51,10 @@ module.exports.create = async (req, res, next) => {
 
         game = await game.save();
 
-        res.json(game);
+        res.status(200).json({
+            message: "jogo cadastrado com sucesso.",
+            _id: game._id
+        });
 
     } catch (error) {
         next(error);
@@ -60,7 +68,7 @@ module.exports.update = async (req, res, next) => {
 
         let game = await GameSchema.findOne({ _id: _id });
 
-        if (!game || !game.status) { throw new ResourceNotFound(); }
+        if (!game || !game.status) { throw new ResourceNotFound("Jogo não encontrado."); }
 
         for (let field in body) { 
             game[field] = body[field];
@@ -68,7 +76,7 @@ module.exports.update = async (req, res, next) => {
 
         game.save();
 
-        res.json(game);
+        res.status(200).json("jogo atualizado com sucesso.");
 
     } catch (error) {
         next(error);
@@ -81,13 +89,13 @@ module.exports.deactivate = async (req, res, next) => {
 
         const game = await GameSchema.findOne({ _id: _id });
 
-        if (!game || !game.status) { throw new ResourceNotFound(); }
+        if (!game || !game.status) { throw new ResourceNotFound("Jogo não encontrado."); }
 
         game.status = false;
 
         game.save();
 
-        res.json(game);
+        res.status(200).json("Jogo desativado com sucesso.");
 
     } catch (error) {
         next(error);

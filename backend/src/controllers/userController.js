@@ -71,7 +71,10 @@ module.exports.signUp = async (req, res, next) => {
 
         user.save();
         
-        res.status(200).json("Usuário cadastrado com sucesso.")
+        res.status(200).json({
+            message: "Usuário cadastrado com sucesso.",
+            _id: user._id
+        });
 
     } catch (error) {
         next(error);

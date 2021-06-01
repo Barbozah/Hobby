@@ -13,9 +13,9 @@ module.exports.findById = async (req, res, next) => {
 
         const rating = await RatingSchema.findOne({ _id });
 
-        if (!rating) { throw new ResourceNotFound(); }
+        if (!rating) { throw new ResourceNotFound("Avaliação não encontrada."); }
 
-        res.json(rating);
+        res.status(200).json(rating);
 
     } catch (error) {
         next(error);
@@ -29,9 +29,9 @@ module.exports.findByUserId = async (req, res, next) => {
 
         const rating = await RatingSchema.findOne({ user_id: user_id });
 
-        if (!rating) { throw new ResourceNotFound(); }
+        if (!rating) { throw new ResourceNotFound("Avaliação não encontrada."); }
 
-        res.json(rating);
+        res.status(200).json(rating);
 
     } catch (error) {
         next(error);
@@ -42,9 +42,11 @@ module.exports.findAllByGameId = async (req, res, next) => {
     try {
         const { query: { page, size, game_id } } = req;
 
-        const ratingArray = await RatingSchema.find({ game_id: game_id }).skip((page || 0) * (size || 10)).lean();
+        const ratings = await RatingSchema.find({ game_id: game_id }).skip((page || 0) * (size || 10)).lean();
 
-        res.json(ratingArray);
+        if (!ratings) { throw new ResourceNotFound("Nenhuma avaliação encontrada."); }
+
+        res.status(200).json(ratings);
 
     } catch (error) {
         next(error);
@@ -71,7 +73,7 @@ module.exports.create = async (req, res, next) => {
 
         await updateStarsAverage(game_id);
 
-        res.json(rating);
+        res.status(200).json(rating);
 
     } catch (error) {
         next(error);
@@ -87,11 +89,11 @@ module.exports.update = async (req, res, next) => {
             { $set: { comment: comment, stars: stars } },
             { new: true }
         );
-        if (!rating) { throw new ResourceNotFound(); }
+        if (!rating) { throw new ResourceNotFound("Avaliação não encontrada."); }
 
         await updateStarsAverage(game_id);
 
-        res.json(rating);
+        res.status(200).json(rating);
 
 
     } catch (error) {
@@ -107,7 +109,7 @@ async function updateStarsAverage(game_id) {
         await GameSchema.findOneAndUpdate(
             { _id: game_id },
             { $set: { starsAverage: average } },
-            { new: true }
+            { new: true, runValidators: true }
         );
     } catch (error) {
         console.log(error)
