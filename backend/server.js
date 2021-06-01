@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
-const {middlewareGlobal, checkCsrfError, csrfMiddleware} = require('./src/middlewares/middleware')
+const {middlewareGlobal, hobby, checkCsrfError, csrfMiddleware} = require('./src/middlewares/middleware')
 const path = require('path');
 
 const flash = require('connect-flash'); // mensagens que se apagam depois de visualizadas, talvez seja útil
@@ -54,6 +54,9 @@ app.on("mongoDB", () => {
         console.log(err); 
     console.log("Server listening on PORT", PORT); 
     console.log(`http://localhost:${PORT}/`); 
+    hobby()
 })
 });
 
+const serverError = require('./src/middlewares/server-error');
+app.use(serverError);
