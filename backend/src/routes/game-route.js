@@ -1,5 +1,6 @@
 const {
   findById,
+  findAllGamesByGenre,
   create,
   findAll,
   update,
@@ -11,13 +12,15 @@ module.exports = (express) => {
 
   router.get('/', findAll);
 
+  router.get('/findAllGamesByGenre', findAllGamesByGenre);
+
   router.post('/create', create);
 
   router.post('/update', update);
 
   router.get('/:_id', findById);
-  
-  router.post('/:_id', deactivate); 
+
+  router.post('/:_id', deactivate);
 
   return router;
 };

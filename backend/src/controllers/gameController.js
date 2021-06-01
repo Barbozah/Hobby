@@ -4,7 +4,6 @@ const {
 } = require('../exceptions/exception');
 
 const GameSchema = require('../models/gameModel');
-const UserSchema = require('../models/userModel');
 
 module.exports.findById = async (req, res, next) => {
     try {
@@ -21,9 +20,29 @@ module.exports.findById = async (req, res, next) => {
     }
 };
 
+module.exports.findAllGamesByGenre = async (req, res, next) => {
+    try {
+        const { body: { genres, page, size } } = req;
+
+        const games = await GameSchema.find({ 'genres': { $in: genres } })
+        .select('-__v')
+        .skip((page || 0) * (size || 10))
+        .lean();
+
+        if (games == []) { throw new ResourceNotFound("Nenhum jogo encontrado."); }
+
+        res.status(200).json(games);
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
 module.exports.findAll = async (req, res, next) => {
     try {
-        const { query: { page, size } } = req;
+        const { body: { page, size } } = req;
 
         const games = await GameSchema.find({ status: true })
         .select('_id')
