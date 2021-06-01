@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const {middlewareGlobal, hobby, checkCsrfError, csrfMiddleware} = require('./src/middlewares/middleware')
 const path = require('path');
 
@@ -35,6 +36,7 @@ const sessionOptions = session({
   }
 });
 
+app.use(cors());
 app.use(sessionOptions);
 app.use(flash());
 app.use(express.urlencoded({ extended: true }));
