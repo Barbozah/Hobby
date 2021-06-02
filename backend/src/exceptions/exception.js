@@ -17,7 +17,7 @@ const getKnownError = (error) => {
     ValidationError: new InvalidFields(error),
     InternalServerError: new InternalServerError(),
     AlreadyExists: new AlreadyExists(currentError.message),
-    InvalidCredentials: new InvalidCredentials(),
+    InvalidCredentials: new InvalidCredentials(error.message),
     ResourceNotFound: new ResourceNotFound(),
     Unauthorized: new Unauthorized(),
     InvalidSession: new InvalidSession(),

@@ -23,8 +23,7 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        require: [true, '{PATH} é um campo obrigatório'],
-        validate: validators.isLength({ message: 'A senha deve ter tamanho entre 6 e 8' }, (6, 8)),
+        require: [true, '{PATH} é um campo obrigatório']
     },
     gameList: [mongoose.Types.ObjectId],
     wishList: [mongoose.Types.ObjectId],
