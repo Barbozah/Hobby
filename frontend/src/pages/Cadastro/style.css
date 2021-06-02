@@ -8,5 +8,9 @@
 }
 
 .invalid-feedback {
-    color: red !important;
+    padding: 2px !important;
+    color: white !important;
+    background-color: #551616!important;
+    font-weight: bold;
+    border-radius: 4px;
 }
