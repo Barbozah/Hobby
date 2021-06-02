@@ -4,6 +4,8 @@ import {useHistory} from 'react-router-dom';
 import './style.css';
 import Logo from '../../components/Logo';
 import api from '../../service/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Cadastro() {
 
@@ -27,25 +29,13 @@ export default function Cadastro() {
         email,
         password
       };
-      try{
-        const response = await api.post('/signup', data);
-
-        console.log(response);  
-        const token = await api.post('/signin', {email: email, password: password});
-
-        localStorage.setItem('token', token.access_token);
-        history.push('/home');
-      
-        
-      }catch(e){
-        alert(e);
-      }
-      
-  
-      
+      api.post('user/signup', data)
+        .then(response => {
+          localStorage.setItem('token', response.access_token);
+          toast.success('Cadastro realizado com sucesso. ')
+          history.push('/login');
+        }).catch(err => toast.error(err.response.data.message));
     }
-  
-
   };
 
 
@@ -109,7 +99,8 @@ export default function Cadastro() {
               Cadastrar
           </Button>
         </Form>
-      </Row> 
+      </Row>
+      <ToastContainer />
     </Container>
   );
 }

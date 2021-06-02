@@ -1,0 +1,15 @@
+.wrapper {
+  background: rgb(49,49,49);
+  background: linear-gradient(0deg, rgba(49,49,49,1) 0%, rgba(24,24,24,1) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+#message {
+  flex: 0 0 50%;
+  height: 100%;
+  color: white;
+  text-align: center;
+}
