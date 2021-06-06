@@ -25,9 +25,9 @@ module.exports.findAllGamesByGenre = async (req, res, next) => {
         const { body: { genres, page, size } } = req;
 
         const games = await GameSchema.find({ 'genres': { $in: genres } })
-        .select('-__v')
-        .skip((page || 0) * (size || 10))
-        .lean();
+            .select('-__v')
+            .skip((page || 0) * (size || 10))
+            .lean();
 
         if (games == []) { throw new ResourceNotFound("Nenhum jogo encontrado."); }
 
@@ -45,9 +45,9 @@ module.exports.findAll = async (req, res, next) => {
         const { body: { page, size } } = req;
 
         const games = await GameSchema.find({ status: true })
-        .select('_id')
-        .skip((page || 0) * (size || 10))
-        .lean();
+            .select('_id')
+            .skip((page || 0) * (size || 10))
+            .lean();
 
         if (!games) { throw new ResourceNotFound("Nenhum jogo encontrado."); }
 
@@ -89,11 +89,11 @@ module.exports.update = async (req, res, next) => {
 
         if (!game || !game.status) { throw new ResourceNotFound("Jogo não encontrado."); }
 
-        for (let field in body) { 
+        for (let field in body) {
             game[field] = body[field];
-         }
+        }
 
-        game.save();
+        await game.save();
 
         res.status(200).json("jogo atualizado com sucesso.");
 
@@ -112,7 +112,7 @@ module.exports.deactivate = async (req, res, next) => {
 
         game.status = false;
 
-        game.save();
+        await game.save();
 
         res.status(200).json("Jogo desativado com sucesso.");
 
