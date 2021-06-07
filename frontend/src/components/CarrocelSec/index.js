@@ -15,11 +15,11 @@ export default function CarrocelSec(props){
     return(
         
             <Carousel itemsToShow={props.qtd}>
-                {props.dados.map((dado, index) =>(
+                {!!props.dados && props.dados.map((dado, index) =>(
                    <Card className="w-100 rounded-0 border-0 bg-dark mx-1 efeito" key={index} onClick={clique}>
                        
                        <Card.Body className="p-0">
-                           <Card.Img src={dado.url} />                    
+                           <Card.Img src={dado.mainImage} />                    
                            
                        </Card.Body>
                        <Card.Footer className="p-0 d-inline-flex justify-content-between text-center bg-secondary">
