@@ -42,12 +42,28 @@ module.exports.findAllGamesByGenre = async (req, res, next) => {
 
 module.exports.findAll = async (req, res, next) => {
     try {
-        const { body: { page, size } } = req;
+        const page = parseInt(req.query.page || 0);
+        const size = parseInt(req.query.size || 0);
+        const sort = req.query.sort || '';
+        const select = req.query.select || '';
 
-        const games = await GameSchema.find({ status: true })
-        .select('_id')
-        .skip((page || 0) * (size || 10))
-        .lean();
+        const sort_query = sort.split(',').map(s=>s.split('_'));
+
+        const select_query = {};
+        
+        for(let s of select.split(',')){
+            select_query[s.replace('-','')] = s.includes('-') ? 0 : 1;
+        }
+
+        let query = GameSchema.find({ status: true }).skip(page*size).lean();
+        
+        if(select) query = GameSchema.find({ status: true }, select_query).skip(page*size).lean();
+
+        if(size) query = query.limit(size);
+
+        if(sort) query = query.sort(sort_query);
+
+        const games = await query;
 
         if (!games) { throw new ResourceNotFound("Nenhum jogo encontrado."); }
 

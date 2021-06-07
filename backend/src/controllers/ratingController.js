@@ -84,7 +84,7 @@ module.exports.update = async (req, res, next) => {
     try {
         const { body: { _id, comment, stars, game_id } } = req;
 
-        const rating = await RatingSchema.findOneAndUpdate(
+        const rating = await RatingSchema.useFindAndModify(
             { _id: _id },
             { $set: { comment: comment, stars: stars } },
             { new: true }
@@ -106,7 +106,7 @@ async function updateStarsAverage(game_id) {
         const ratingArray = await RatingSchema.find({ game_id: game_id });
         const average = await RatingSchema.calcAverage(ratingArray);
 
-        await GameSchema.findOneAndUpdate(
+        await GameSchema.useFindAndModify(
             { _id: game_id },
             { $set: { starsAverage: average } },
             { new: true, runValidators: true }

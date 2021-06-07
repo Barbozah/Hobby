@@ -102,7 +102,7 @@ module.exports.updateStatus = async (req, res, next) => {
             date: Date.now()
         };
 
-        order = await orderSchema.findOneAndUpdate(
+        order = await orderSchema.useFindAndModify(
             { _id: _id },
             { $push: { status: status } },
             { new: true, select: '-__v', runValidators: true}
