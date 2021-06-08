@@ -15,7 +15,7 @@ module.exports.findById = async (req, res, next) => {
 
         if (!order) { throw new ResourceNotFound("Pedido não encontrado."); }
 
-        res.status(200).json(order);
+        res.json(order);
 
     } catch (error) {
         next(error);
@@ -33,7 +33,7 @@ module.exports.findAllByUserId = async (req, res, next) => {
 
         if (!orders) { throw new ResourceNotFound("Nenhum pedido encontrado."); }
 
-        res.status(200).json(orders);
+        res.json(orders);
 
     } catch (error) {
         next(error);
@@ -74,7 +74,7 @@ module.exports.create = async (req, res, next) => {
 
         order = await order.save();
 
-        res.status(200).json({
+        res.json({
             message: "Pedido cadastrado com sucesso.",
             _id: order._id
         });
@@ -108,7 +108,7 @@ module.exports.updateStatus = async (req, res, next) => {
             { new: true, select: '-__v', runValidators: true}
         );
 
-        res.status(200).json(order);
+        res.json(order);
 
     } catch (error) {
         next(error);

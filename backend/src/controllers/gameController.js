@@ -13,7 +13,7 @@ module.exports.findById = async (req, res, next) => {
 
         if (!game || !game.status) { throw new ResourceNotFound("Jogo não encontrado."); }
 
-        res.status(200).json(game);
+        res.json(game);
 
     } catch (error) {
         next(error);
@@ -31,7 +31,7 @@ module.exports.findAllGamesByGenre = async (req, res, next) => {
 
         if (games == []) { throw new ResourceNotFound("Nenhum jogo encontrado."); }
 
-        res.status(200).json(games);
+        res.json(games);
 
     } catch (error) {
         next(error);
@@ -67,7 +67,7 @@ module.exports.findAll = async (req, res, next) => {
 
         if (!games) { throw new ResourceNotFound("Nenhum jogo encontrado."); }
 
-        res.status(200).json(games);
+        res.json(games);
 
     } catch (error) {
         next(error);
@@ -86,7 +86,7 @@ module.exports.create = async (req, res, next) => {
 
         game = await game.save();
 
-        res.status(200).json({
+        res.json({
             message: "jogo cadastrado com sucesso.",
             _id: game._id
         });
@@ -111,7 +111,7 @@ module.exports.update = async (req, res, next) => {
 
         await game.save();
 
-        res.status(200).json("jogo atualizado com sucesso.");
+        res.json("jogo atualizado com sucesso.");
 
     } catch (error) {
         next(error);
@@ -130,7 +130,7 @@ module.exports.deactivate = async (req, res, next) => {
 
         await game.save();
 
-        res.status(200).json("Jogo desativado com sucesso.");
+        res.json("Jogo desativado com sucesso.");
 
     } catch (error) {
         next(error);
