@@ -15,7 +15,7 @@ module.exports.findById = async (req, res, next) => {
 
         if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrado"); }
         
-        res.status(200).json(user);
+        res.json(user);
 
     } catch (error) {
         next(error);
@@ -30,7 +30,7 @@ module.exports.findAll = async (req, res, next) => {
         .skip((page || 0) * (size || 10)).lean()
         .select('_id email');
 
-        res.status(200).json(users);
+        res.json(users);
     } catch (error) {
         next(error);
     }
@@ -53,7 +53,7 @@ module.exports.signIn = async (req, res, next) => {
                 $set: { lastLogin: Date.now(), token: getToken(user) },
             }, { new: true, select: 'token'});
 
-            res.status(200).json(user);
+            res.json(user);
     } catch (error) {
         next(error);
     }
@@ -71,7 +71,7 @@ module.exports.signUp = async (req, res, next) => {
 
         user.save();
         
-        res.status(200).json({
+        res.json({
             message: "Usuário cadastrado com sucesso.",
             _id: user._id
         });
@@ -91,7 +91,7 @@ module.exports.alterPassword = async (req, res, next) => {
 
         user.password = newPassword;
 
-        res.status(200).json("Senha Atualizada com sucesso.")
+        res.json("Senha Atualizada com sucesso.")
 
     } catch (error) {
         next(error);
@@ -111,7 +111,7 @@ module.exports.alterSettings = async (req, res, next) => {
 
         user.save();
 
-        res.status(200).json("Configurações atualizadas com sucesso.")
+        res.json("Configurações atualizadas com sucesso.")
     } catch (error) {
         next(error);
     }
@@ -129,7 +129,7 @@ if (!user || !user.status) { throw new ResourceNotFound("Usuário não encontrad
 
         user.save();
 
-        res.status(200).json("E-mail atualizado com sucesso.")
+        res.json("E-mail atualizado com sucesso.")
 
     } catch (error) {
         next(error);
@@ -152,7 +152,7 @@ module.exports.addWishList = async (req, res, next) => {
 
         user.save();
 
-        res.status(200).json("Jogo adicionado com sucesso a lista de desejos.");
+        res.json("Jogo adicionado com sucesso a lista de desejos.");
 
     } catch (error) {
         next(error);
@@ -173,7 +173,7 @@ module.exports.removeWishList = async (req, res, next) => {
 
         user.save();
 
-        res.status(200).json("Jogo removido com sucesso da lista de desejos.");
+        res.json("Jogo removido com sucesso da lista de desejos.");
 
     } catch (error) {
         next(error);
@@ -196,7 +196,7 @@ module.exports.addGameList = async (req, res, next) => {
 
         user.save();
 
-        res.status(200).json("Jogo adicionado com sucesso a biblioteca do usuário.");
+        res.json("Jogo adicionado com sucesso a biblioteca do usuário.");
 
     } catch (error) {
         next(error);
@@ -236,7 +236,7 @@ module.exports.deactivate = async (req, res, next) => {
 
         user.save();
 
-        res.status(200).json("Usuário desativado com sucesso.");
+        res.json("Usuário desativado com sucesso.");
     } catch (error) {
         next(error);
     }

@@ -15,7 +15,7 @@ module.exports.findById = async (req, res, next) => {
 
         if (!rating) { throw new ResourceNotFound("Avaliação não encontrada."); }
 
-        res.status(200).json(rating);
+        res.json(rating);
 
     } catch (error) {
         next(error);
@@ -31,7 +31,7 @@ module.exports.findByUserId = async (req, res, next) => {
 
         if (!rating) { throw new ResourceNotFound("Avaliação não encontrada."); }
 
-        res.status(200).json(rating);
+        res.json(rating);
 
     } catch (error) {
         next(error);
@@ -46,7 +46,7 @@ module.exports.findAllByGameId = async (req, res, next) => {
 
         if (!ratings) { throw new ResourceNotFound("Nenhuma avaliação encontrada."); }
 
-        res.status(200).json(ratings);
+        res.json(ratings);
 
     } catch (error) {
         next(error);
@@ -73,7 +73,7 @@ module.exports.create = async (req, res, next) => {
 
         await updateStarsAverage(game_id);
 
-        res.status(200).json(rating);
+        res.json(rating);
 
     } catch (error) {
         next(error);
@@ -93,7 +93,7 @@ module.exports.update = async (req, res, next) => {
 
         await updateStarsAverage(game_id);
 
-        res.status(200).json(rating);
+        res.json(rating);
 
 
     } catch (error) {
