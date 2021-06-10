@@ -8,6 +8,7 @@ import Cadastro from './pages/Cadastro';
 import Initial from './pages/Initial';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Game from './pages/Game';
 import OutOfService from './pages/OutOfService';
 
 
@@ -20,6 +21,7 @@ export default function Routes(){
                 <Route path="/cadastro" component={Cadastro} />
                 <Route path="/login" component={Login}/>
                 <RotaProtegida path="/home" component={Home}/>
+                <Route path="/game/:id" component={Game} />
                 <Route component={NotFound}/>
             </Switch>
         </BrowserRouter>
