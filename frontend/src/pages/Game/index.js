@@ -12,7 +12,7 @@ import './game.css';
 
 export default function Game() {
 
-    const{id} = useParams();
+    const{id} = useParams();//usamos o id do jogo para requisitar no backend
 
     var mockgame =  {
         "extraImages": ["https://igg-games.com/wp-content/uploads/2018/12/Arcane-Raise-Torrent-Download.jpg", "https://igg-games.com/wp-content/uploads/2018/12/Arcane-Raise-PC-Crack.jpg"],
@@ -116,7 +116,7 @@ export default function Game() {
   },[game])
 
   useEffect(() =>{
-    if(minimum.length > 0){
+    if(minimum.length > 0 && !!game){
         var atributos_reco = []
         var recomendeds = game.requirements.recommended
 
@@ -130,49 +130,49 @@ export default function Game() {
         setRecomended(req_reco)
     }
     
-  },[minimum])
+  },[minimum,game])
 
   
   return (<>
     <Sidenav />
     <Container>
         <Row>
-            {!!game ?<div className="d-flex fs-5"> <Link to='/home'>Início</Link><p>{' > '}</p> <Link to={`/loja/${game.genres[0]}`}>{game.genres[0]}</Link><p>{' > '}</p> <Link to={`/games/${id}`} className='disabled-link'>{game.title}</Link> </div> : <h1>nada</h1>}
+            {!!game ?<div className="d-flex fs-5"> <Link to='/home'>Início</Link><p>{' > '}</p> <Link to={`/loja/${game.genres[0]}`}>{game.genres[0]}</Link><p>{' > '}</p> <Link to={`/games/${id}`} className='disabled-link'>{game.title}</Link> </div> : <></>}
         </Row>
         <Row>
-            {!!game ? <h1 className="text-light mb-5 text-center">{game.title}</h1> : <h1>nada</h1>}
+            {!!game ? <h1 className="text-light mb-5 text-center">{game.title}</h1> : <></>}
         </Row>
         <Row>
             <Col xs={9} className="d-flex justify-content-center">
-                {!!game ? <Image src={game.mainImage} className="w-75"/> : <h1>wallpaper here</h1>}
+                {!!game ? <Image src={game.mainImage} className="w-75"/> : <></>}
             </Col>
             <Col className="p-0 d-grid">
                 <Row className="my-1">
-                    {!!game ? <Image src={game.extraImages[0]}/> : <h1>secondary images here</h1>}
+                    {!!game ? <Image src={game.extraImages[0]}/> : <></>}
                 </Row>
                 <Row className="my-1">
-                    {!!game ? <Image src={game.extraImages[1]}/> : <h1>secondary images here</h1>}
+                    {!!game ? <Image src={game.extraImages[1]}/> : <></>}
                 </Row>        
                 <Row className="mx-0 justify-content-between text-center bg-secondary ">
                     <Col className="p-0 d-flex justify-content-center">
-                        {!!game ? <h6 className="text-light">R$ {game.price.toFixed(2).toString().replaceAll(".",",")}</h6>: <h1>price here</h1>}
+                        {!!game ? <h6 className="text-light">R$ {game.price.toFixed(2).toString().replaceAll(".",",")}</h6>: <></>}
                     </Col>
                     <Col className="p-0 d-flex justify-content-center">
-                        {!!game ? <Button variant="success" className="rounded-0 m-0 w-100">Carrinho <RiShoppingCartLine size={13}/></Button> : <h1>button here</h1>}
+                        {!!game ? <Button variant="success" className="rounded-0 m-0 w-100">Carrinho <RiShoppingCartLine size={13}/></Button> : <></>}
                     </Col>
                 </Row>  
             </Col>
         </Row>
         <Row>
             <Col xs={9} className="mt-2">
-                {!!game ? <p className="text-light lh-base">{game.description}</p> : <p>nada</p>}
+                {!!game ? <p className="text-light lh-base">{game.description}</p> : <></>}
             </Col>
             <Col className="mt-2 p-0 mx-2">
                 <Row>
                     <Card className="bg-secondary rounded-0">
                     <Card.Body>
                         <Card.Title className="text-light">Avaliações</Card.Title>
-                        {!!game ?  <StarRatingComponent name="rate2" editing={false} starCount={5} value={game.starsAverage}/>:<p>nada</p>} 
+                        {!!game ?  <StarRatingComponent name="rate2" editing={false} starCount={5} value={game.starsAverage}/>:<></>} 
                         
                     </Card.Body>
                     </Card>

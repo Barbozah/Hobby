@@ -1,14 +1,18 @@
 import React from 'react';
 import {Card} from 'react-bootstrap';
 import Carousel from 'react-elastic-carousel';
+//import { useHistory } from 'react-router-dom';
 
 import './carrocel.css';    
 
 
 export default function CarrocelSec(props){
 
+    //const history = useHistory();
+
     function clique(){
         console.log("clicou");
+        //history.push(`/game/${id}`); irá redirecionar para a página do jogo
     }
 
     
