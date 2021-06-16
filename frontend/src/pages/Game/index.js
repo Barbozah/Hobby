@@ -102,7 +102,7 @@ export default function Game() {
                     <Card className="bg-secondary rounded-0">
                     <Card.Body>
                         <Card.Title className="text-light">Avaliações</Card.Title>
-                        {!!game ?  <StarRatingComponent name="rate2" editing={false} starCount={5} value={game.starsAverage}/>:<></>} 
+                        {!!game ?  <><StarRatingComponent name="rate2" editing={false} starCount={5} size={100} value={game.starsAverage}/> <h6 className="text-light">{game.starsAverage}</h6> </>:<></>} 
                         
                     </Card.Body>
                     </Card>
