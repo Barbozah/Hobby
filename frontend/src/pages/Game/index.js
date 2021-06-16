@@ -1,9 +1,9 @@
 import api from '../../service/api';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {Container, Card, Row, Col, Image, Button} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {RiShoppingCartLine} from 'react-icons/ri';
-import { ToastContainer, toast } from 'react-toastify';
 
 import Sidenav from '../../components/Sidebar/Sidenav';
 
@@ -12,7 +12,7 @@ import StarRatingComponent from 'react-star-rating-component';
 import './game.css';
 
 export default function Game() {
-
+    const history = useHistory();
     const{id} = useParams();//usamos o id do jogo para requisitar no backend
 
   const [game, setGame] = useState();
@@ -24,7 +24,7 @@ export default function Game() {
       const token = localStorage.getItem('token');
       const res = await api.get(url, {
         headers: { Authorization: 'Bearer ' + token}
-      }).catch(err => toast.error(err.response.data.message));
+      }).catch(() => history.push('/home')); //caso tenha qualquer erro ao retornar o jogo, mandar para a home
       setter(res.data); 
     }
     fetchData(`game/${id}`, setGame);
@@ -140,7 +140,7 @@ export default function Game() {
                 </Row>
             </Col>
         </Row>
-        <ToastContainer />
+      
     </Container>
     </>
   );
