@@ -21,7 +21,7 @@ export default function Routes(){
                 <Route path="/cadastro" component={Cadastro} />
                 <Route path="/login" component={Login}/>
                 <RotaProtegida path="/home" component={Home}/>
-                <Route path="/game/:id" component={Game} />
+                <RotaProtegida path="/game/:id" component={Game} />
                 <Route component={NotFound}/>
             </Switch>
         </BrowserRouter>
