@@ -38,7 +38,41 @@ module.exports.findAllGamesByGenre = async (req, res, next) => {
     }
 };
 
+module.exports.findAllGenres = async (req, res, next) => {
+    try {
+        const genres = await GameSchema.distinct('genres');
+        
+        res.json(genres);
+    } catch (error) {
+        next(error);
+    }
+}
 
+module.exports.findGameByTitle = async (req, res, next) => {
+    try {
+        const select = req.query.select || '';
+        const title = req.query.title;
+
+        const select_query = {};
+        
+        for(let s of select.split(',')){
+            select_query[s.replace('-','')] = s.includes('-') ? 0 : 1;
+        }
+
+        let query = GameSchema.find({ title: {$regex: title}, status: true }).skip(page*size);
+        
+        if(select) query = GameSchema.find({ title: {$regex: title}, status: true }, select_query);
+
+        const game = await query;
+
+        if (!game) { throw new ResourceNotFound("Jogo não encontrado."); }
+
+        res.json(game);
+
+    } catch (error) {
+        next(error);
+    }
+};
 
 module.exports.findAll = async (req, res, next) => {
     try {

@@ -1,6 +1,8 @@
 const {
   findById,
+  findGameByTitle,
   findAllGamesByGenre,
+  findAllGenres,
   create,
   findAll,
   update,
@@ -12,7 +14,11 @@ module.exports = (express) => {
 
   router.get('/', findAll);
 
+  router.get('/findGameByTitle', findGameByTitle);
+
   router.get('/findAllGamesByGenre', findAllGamesByGenre);
+
+  router.get('/findAllGenres', findAllGenres);
 
   router.post('/create', create);
 
