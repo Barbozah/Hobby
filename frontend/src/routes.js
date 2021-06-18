@@ -9,6 +9,8 @@ import Initial from './pages/Initial';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Game from './pages/Game';
+import Biblioteca from './pages/Biblioteca';
+import Whishlist from './pages/Wishlist';
 import OutOfService from './pages/OutOfService';
 
 
@@ -20,6 +22,8 @@ export default function Routes(){
                 <Route path="/outOfService" component={ OutOfService }/>
                 <Route path="/cadastro" component={Cadastro} />
                 <Route path="/login" component={Login}/>
+                <Route path="/biblioteca" component={Biblioteca} />
+                <Route path="/wishlist" component={Whishlist} />
                 <RotaProtegida path="/home" component={Home}/>
                 <RotaProtegida path="/game/:id" component={Game} />
                 <Route component={NotFound}/>
