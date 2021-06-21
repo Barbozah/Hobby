@@ -14,7 +14,7 @@ export default function CarrocelSec(props){
         history.push(`/game/${id}`); //irá redirecionar para a página do jogo
     }
 
-    console.log(props.dados);
+    
     return(
         
             <Carousel itemsToShow={props.qtd}>

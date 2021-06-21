@@ -1,4 +1,6 @@
+import api from '../../service/api';
 import React, { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import {Container, Row, Col, Image, Form} from 'react-bootstrap';
 
@@ -8,14 +10,36 @@ import Sidenav from '../../components/Sidebar/Sidenav';
 export default function Whishlist() {
     const history = useHistory();
 
-    var jogos = [{mainImage: "https://img.hype.games/cdn/facad932-4082-4d20-980d-34bb385d2233Red-Dead-Redemption-2-Ultimate-Edition-Cover.jpg", _id: 1, title: "java"},
-                {mainImage: "https://img.hype.games/cdn/facad932-4082-4d20-980d-34bb385d2233Red-Dead-Redemption-2-Ultimate-Edition-Cover.jpg", _id: 2, title: "python"},
-                {mainImage: "https://img.hype.games/cdn/facad932-4082-4d20-980d-34bb385d2233Red-Dead-Redemption-2-Ultimate-Edition-Cover.jpg", _id: 3, title: "c++"},
-                {mainImage: "https://img.hype.games/cdn/facad932-4082-4d20-980d-34bb385d2233Red-Dead-Redemption-2-Ultimate-Edition-Cover.jpg", _id: 4, title: "php"},
-                {mainImage: "http://cdn26.us1.fansshare.com/photo/pcwallpapers/batman-arkham-origins-video-game-hd-wallpaper-pc-gaming-wallpapers-1060311066.jpg", _id: 5, title: "batman"}]
-
-    const [jogo, setJogo] = useState(jogos);
+    const [jogos, setJogos] = useState([]);
     const [pesquisa, setPesquisa] = useState("");
+
+
+    useEffect(() => {
+        async function fetchData(url, setter) {
+            const token = localStorage.getItem('token');
+            const res = await api.get(url, {
+                headers: { Authorization: 'Bearer ' + token }
+            }).catch(err => toast.error(err.response.data.message));
+
+            var whishes = res.data.wishList;
+            var jogos_retornados = []
+            if (whishes.length > 0) {
+
+                for (let index = 0; index < whishes.length; index++) {
+                    let id_jogo = whishes[index];
+                    var jogo = await api.get(`game/${id_jogo}`, {
+                        headers: { Authorization: 'Bearer ' + token }
+                    }).catch(err => toast.error(err.response.data.message));
+                    jogos_retornados.push(jogo.data);
+                } 
+                setter(jogos_retornados);
+            }              
+        }
+        let id = localStorage.getItem('id');
+        fetchData(`user/${id}`, setJogos)
+    }, [])
+
+
 
     function verJogo(id){
         history.push(`/game/${id}`);
@@ -55,11 +79,11 @@ export default function Whishlist() {
             </Col>
         </Row>
         <Row>
-            {pesquisa === "" ? jogo.map((j,index) => (
+            {pesquisa === "" ? jogos.map((j,index) => (
                 <Col xs={3} className="my-2" onClick={() => verJogo(j._id)} key={index}>
                     <Image src={j.mainImage} className="w-100 efeito" />
                 </Col>
-            )) : jogo.filter(f =>{
+            )) : jogos.filter(f =>{
                return f.title.includes(pesquisa);
             }).map((f,index) => (
                 <Col xs={3} className="my-2" onClick={() => verJogo(f._id)} key={index}>
@@ -67,7 +91,7 @@ export default function Whishlist() {
                 </Col>
             ))}  
         </Row>
- 
+        <ToastContainer />
     </Container>
     </>
   );

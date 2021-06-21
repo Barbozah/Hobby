@@ -28,10 +28,10 @@ export default function Game() {
       setter(res.data); 
     }
     fetchData(`game/${id}`, setGame);
-  }, [id]);
+  }, [id, history]);
   
   useEffect(()=>{
-    if(!!game){
+    if(!!game && !!game.requirements){//alguns jogos não possuem requisitos
         var atributos = []
         var minimos = game.requirements.minimum
         for(var x in minimos){
@@ -46,7 +46,7 @@ export default function Game() {
   },[game])
 
   useEffect(() =>{
-    if(minimum.length > 0 && !!game){
+    if(!!game && !!game.requirements){
         var atributos_reco = []
         var recomendeds = game.requirements.recommended
 
@@ -127,15 +127,15 @@ export default function Game() {
                     <Col>
                         
                         <p className="text-light fs-4">Mínimos: </p>
-                        {minimum.map((min,index) => (
+                        {minimum.length > 0 ?  minimum.map((min,index) => (
                             <p key={index} className="text-light">{min.atr}: {min.valor}</p>
-                        ))}
+                        )) : <p>Esse jogo não possui requisitos informados</p>}
                     </Col>
                     <Col>
                         <p className="text-light fs-4">Recomendados:</p>
-                        {recomended.map((min,index) => (
+                        {recomended.length > 0 ?recomended.map((min,index) => (
                             <p key={index} className="text-light">{min.atr}: {min.valor}</p>
-                        ))}
+                        )) : <p>Esse jogo não possui requisitos informados</p>}
                     </Col>
                 </Row>
             </Col>

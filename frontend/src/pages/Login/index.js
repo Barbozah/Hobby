@@ -29,6 +29,7 @@ export default function Login() {
       api.post('user/signin', data)
         .then(response => {
           localStorage.setItem('token', response.data.token);
+          localStorage.setItem('id', response.data._id);
           history.push('/home');
         }).catch(err => toast.error(err.response.data.message));
     }
