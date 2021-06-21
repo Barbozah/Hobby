@@ -32,6 +32,9 @@ export default function Biblioteca() {
     <Sidenav />
     <Container>
         <Row>
+            <h1 className="text-light text-center">Biblioteca</h1>
+        </Row>
+        <Row>
             <Col>
                 <h3 className="text-light">Classificar por: Recente</h3>
             </Col>

@@ -32,6 +32,9 @@ export default function Whishlist() {
     <Sidenav />
     <Container>
         <Row>
+            <h1 className="text-light text-center">Lista de desejos</h1>
+        </Row>
+        <Row>
             <Col>
                 <h3 className="text-light">Classificar por: Recente</h3>
             </Col>
