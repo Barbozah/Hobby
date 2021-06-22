@@ -12,6 +12,7 @@ import Game from './pages/Game';
 import Ajuda from './pages/Ajuda';
 import Biblioteca from './pages/Biblioteca';
 import Whishlist from './pages/Wishlist';
+import Preferencias from './pages/Preferencias';
 import OutOfService from './pages/OutOfService';
 
 
@@ -28,6 +29,7 @@ export default function Routes(){
                 <RotaProtegida path="/help" component={Ajuda} />
                 <RotaProtegida path="/home" component={Home}/>
                 <RotaProtegida path="/game/:id" component={Game} />
+                <RotaProtegida path="/settings" component={Preferencias} />
                 <Route component={NotFound}/>
             </Switch>
         </BrowserRouter>
