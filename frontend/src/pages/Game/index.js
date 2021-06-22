@@ -25,7 +25,22 @@ export default function Game() {
       const res = await api.get(url, {
         headers: { Authorization: 'Bearer ' + token}
       }).catch(() => history.push('/home')); //caso tenha qualquer erro ao retornar o jogo, mandar para a home
-      setter(res.data); 
+
+      var jogo = res.data;
+      const id_user = localStorage.getItem('id');
+
+      const user = await api.get(`user/${id_user}`,{
+        headers: { Authorization: 'Bearer ' + token}
+      })
+
+      if(user.data.gameList.includes(jogo._id)){
+        jogo["possui"] = true;
+      }else{
+        jogo["possui"] = false;
+      }
+
+
+      setter(jogo); 
     }
     fetchData(`game/${id}`, setGame);
   }, [id, history]);
@@ -88,7 +103,7 @@ export default function Game() {
                         {!!game ? <h6 className="text-light">R$ {game.price.toFixed(2).toString().replaceAll(".",",")}</h6>: <></>}
                     </Col>
                     <Col className="p-0 d-flex justify-content-center">
-                        {!!game ? <Button variant="success" className="rounded-0 m-0 w-100">Carrinho <RiShoppingCartLine size={13}/></Button> : <></>}
+                        {!!game ? game.possui ? <Button variant="danger" className="rounded-0 m-0 w-100">Remover Jogo</Button> : <Button variant="success" className="rounded-0 m-0 w-100">Carrinho <RiShoppingCartLine size={13}/></Button> : <></>}
                     </Col>
                 </Row>  
             </Col>

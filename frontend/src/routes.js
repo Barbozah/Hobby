@@ -23,9 +23,9 @@ export default function Routes(){
                 <Route path="/outOfService" component={ OutOfService }/>
                 <Route path="/cadastro" component={Cadastro} />
                 <Route path="/login" component={Login}/>
-                <Route path="/library" component={Biblioteca} />
-                <Route path="/wishlist" component={Whishlist} />
-                <Route path="/help" component={Ajuda} />
+                <RotaProtegida path="/library" component={Biblioteca} />
+                <RotaProtegida path="/wishlist" component={Whishlist} />
+                <RotaProtegida path="/help" component={Ajuda} />
                 <RotaProtegida path="/home" component={Home}/>
                 <RotaProtegida path="/game/:id" component={Game} />
                 <Route component={NotFound}/>

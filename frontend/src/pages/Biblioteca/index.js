@@ -53,7 +53,7 @@ export default function Biblioteca() {
 
         setPesquisa(pes);
     }
-    console.log(jogos);
+    
     return (<>
         <Sidenav />
         <Container>
