@@ -49,9 +49,10 @@ export default function Biblioteca() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        const pes = document.getElementById('Pesquisar').value;
-
-        setPesquisa(pes);
+    }
+    
+    function handleChange(value){//sempre que o usuário mudar o valor, alterar o estado da pesquisa para fazer a filtragem
+        setPesquisa(value);
     }
     
     return (<>
@@ -72,6 +73,7 @@ export default function Biblioteca() {
                                 type="text"
                                 placeholder="Pesquisar"
                                 className="rounded-0 input-cadastro text-light border-secondary"
+                                onChange={event => handleChange(event.target.value)} 
                             />
                             <Form.Control.Feedback type="invalid">
                                 Por favor, informe uma senha contendo de 6 a 8 caracteres.
@@ -86,7 +88,7 @@ export default function Biblioteca() {
                         <Image src={j.mainImage} className="w-100 efeito" />
                     </Col>
                 )) : jogos.filter(f => {
-                    return f.title.includes(pesquisa);
+                    return f.title.toUpperCase().includes(pesquisa.toUpperCase());//deixa tudo uppercase para ignorar o case sensitive
                 }).map((f, index) => (
                     <Col xs={3} className="my-2" onClick={() => verJogo(f._id)} key={index}>
                         <Image src={f.mainImage} className="w-100 efeito" />
