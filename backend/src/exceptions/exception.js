@@ -6,6 +6,7 @@ const InternalServerError = require('./errors/internal-server-error');
 const AlreadyExists = require('./errors/already-exists');
 const InvalidCredentials = require('./errors/invalid-credentials');
 const ResourceNotFound = require('./errors/resource-not-found');
+const InvalidPaymentRequest = require('./errors/invalid-payment-request');
 
 const getKnownError = (error) => {
 
@@ -28,6 +29,8 @@ const getKnownError = (error) => {
     case 'ResourceNotFound':
     case 'InvalidCredentials':
       break;
+    case 'InvalidPaymentRequest':
+      break;
     default:
       error = new InternalServerError();
       break;
@@ -46,4 +49,5 @@ module.exports = {
   AlreadyExists,
   ResourceNotFound,
   InvalidCredentials,
+  InvalidPaymentRequest,
 };

@@ -3,6 +3,7 @@ const {
   create,
   updateStatus,
   findById,
+  payment,
 } = require('../controllers/orderController');
 
 module.exports = (express) => {
@@ -15,6 +16,8 @@ module.exports = (express) => {
   router.post('/updateStatus', updateStatus);
 
   router.get('/:_id', findById);
+
+  router.post('/payment', payment);
 
   return router;
 };
