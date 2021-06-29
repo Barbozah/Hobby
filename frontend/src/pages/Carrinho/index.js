@@ -21,43 +21,36 @@ export default function Carrinho() {
     const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
 
     useEffect(() => {
-
-        var gamesList = [];
-
         if (cart) {
 
-            async function fetchData(url) {//essa função fará a busca no backend pelo id do jogo
+            async function fetchData() {//essa função fará a busca no backend pelo id do jogo
+                var lista = [];
                 const token = localStorage.getItem('token');
-                const res = await api.get(url, {
-                    headers: { Authorization: 'Bearer ' + token }
-                }).catch(() => history.push('/home')); //caso tenha qualquer erro ao retornar o jogo, mandar para a home
+                
+                for(let x = 0; x < cart.length;x++){
+                    const res = await api.get('game/'+cart[x], {
+                        headers: { Authorization: 'Bearer ' + token }
+                    }).catch(() => history.push('/home')); //caso tenha qualquer erro ao retornar o jogo, mandar para a home
+                    var jogo = res.data;
 
-                console.log(res);
+                    lista.push({
+                        id: jogo._id,
+                        nome: jogo.title,
+                        valor: jogo.price,
+                        desconto: jogo.discount
+                    });
+                }
+                setItens(lista);
 
-                var jogo = res.data;
-
-                console.log(jogo);
-
-                gamesList.push({
-                    id: jogo._id,
-                    nome: jogo.title,
-                    valor: jogo.price,
-                    desconto: jogo.discount
-                });
-
-            }
-            cart.forEach(element => {
-                fetchData('game/' + element);
-            });
-
-            setItens(gamesList);
+            }            
+            fetchData();            
         }
     },[cart]);
 
     function handleSubmit(event) {//impedir que usuário recarregue a página se apertar enter
         event.preventDefault();
     }
-
+    //console.log(itens);
     return (<>
         <Sidenav />
         <Container>
