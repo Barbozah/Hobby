@@ -1,18 +1,17 @@
 import React from 'react';
 import {Card} from 'react-bootstrap';
 import Carousel from 'react-elastic-carousel';
-//import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import './carrocel.css';    
 
 
 export default function CarrocelSec(props){
 
-    //const history = useHistory();
+    const history = useHistory();
 
-    function clique(){
-        console.log("clicou");
-        //history.push(`/game/${id}`); irá redirecionar para a página do jogo
+    function clique(id){
+        history.push(`/game/${id}`); //irá redirecionar para a página do jogo
     }
 
     
@@ -20,14 +19,14 @@ export default function CarrocelSec(props){
         
             <Carousel itemsToShow={props.qtd}>
                 {!!props.dados && props.dados.map((dado, index) =>(
-                   <Card className="w-100 rounded-0 border-0 bg-dark mx-1 efeito" key={index} onClick={clique}>
+                   <Card className="w-100 rounded-0 border-0 bg-dark mx-1 efeito" key={index} onClick={() => clique(dado._id)}>
                        
                        <Card.Body className="p-0">
                            <Card.Img src={dado.mainImage} />                    
                            
                        </Card.Body>
                        <Card.Footer className="p-0 d-inline-flex justify-content-between text-center bg-secondary">
-                           <h6 className="text-light">R$ {dado.price.toFixed(2).toString().replaceAll(".",",")}</h6>
+                           <h6 className="text-light">R$ {dado.price.toFixed(2).toString().replaceAll(".",",")} </h6>
                        </Card.Footer>
                    </Card>                   
                 ))}

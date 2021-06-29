@@ -9,6 +9,11 @@ import Initial from './pages/Initial';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Game from './pages/Game';
+import Ajuda from './pages/Ajuda';
+import Carrinho from './pages/Carrinho'
+import Biblioteca from './pages/Biblioteca';
+import Whishlist from './pages/Wishlist';
+import Preferencias from './pages/Preferencias';
 import OutOfService from './pages/OutOfService';
 
 
@@ -20,8 +25,13 @@ export default function Routes(){
                 <Route path="/outOfService" component={ OutOfService }/>
                 <Route path="/cadastro" component={Cadastro} />
                 <Route path="/login" component={Login}/>
+                <RotaProtegida path="/library" component={Biblioteca} />
+                <RotaProtegida path="/cart" component={Carrinho} />
+                <RotaProtegida path="/wishlist" component={Whishlist} />
+                <RotaProtegida path="/help" component={Ajuda} />
                 <RotaProtegida path="/home" component={Home}/>
-                <Route path="/game/:id" component={Game} />
+                <RotaProtegida path="/game/:id" component={Game} />
+                <RotaProtegida path="/settings" component={Preferencias} />
                 <Route component={NotFound}/>
             </Switch>
         </BrowserRouter>

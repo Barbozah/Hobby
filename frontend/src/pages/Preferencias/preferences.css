@@ -1,0 +1,18 @@
+label {
+    color: white;
+    font-size: larger;
+}
+
+.form-check-input{
+    border-radius: 0px !important;
+    background-color: #343a40 !important;
+    border-color: white !important;
+}
+
+.preferences-title {
+    font-size: xx-large !important;
+}
+
+.legenda {
+    color: #CFD7DD;
+}
