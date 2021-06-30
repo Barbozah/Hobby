@@ -116,7 +116,7 @@ export default function Game() {
                 description: 'Carrinho'
             });
 
-            var cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             let newCart = cart.filter((item) => {
                 return item !== game_id;

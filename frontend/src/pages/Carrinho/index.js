@@ -2,7 +2,7 @@ import api from '../../service/api';
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
-import { Container, Row, Col, Button, Image, Form, Modal, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Container, Row, Col, Button, Modal, Dropdown, DropdownButton } from 'react-bootstrap';
 import { RiShoppingCartLine } from 'react-icons/ri';
 import Sidenav from '../../components/Sidebar/Sidenav';
 
@@ -56,10 +56,6 @@ export default function Carrinho() {
         }
     }, [history, cart]);
 
-    function handleSubmit(event) {//impedir que usuário recarregue a página se apertar enter
-        event.preventDefault();
-    };
-
     function removeCart(game_id) {
         var cart_temp = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -92,12 +88,12 @@ export default function Carrinho() {
 
     async function createOrder() {
 
-        debugger;
         var itemList = itens.map((item)=>{
             return  item.id ;
         })
 
         var user_id = localStorage.getItem('id');
+
         const data = {
             user_id,
             itemList,
