@@ -6,8 +6,10 @@ const SALT = 16;
 const { getToken } = require('../config/jwt-configuration');
 
 const SettingsSchema = new mongoose.Schema({
-    field1: String,
-    field2: String
+    adulto: Boolean,
+    violento: Boolean,
+    nudez: Boolean,
+    explicito: Boolean
 });
 
 const UserSchema = new mongoose.Schema({

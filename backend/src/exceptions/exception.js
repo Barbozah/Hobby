@@ -12,10 +12,10 @@ const getKnownError = (error) => {
 
   switch (error.name) {
 
-    case 'UnauthorizedError': error = new Unauthorized()
+    case 'UnauthorizedError': error = new Unauthorized(error.message)
       break;
 
-    case 'TokenExpiredError': error = new InvalidSession()
+    case 'TokenExpiredError': error = new InvalidSession(error.message)
       break;
 
     case 'ValidationError': error = new InvalidFields(error.message)

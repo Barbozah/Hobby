@@ -22,15 +22,21 @@ module.exports.findById = async (req, res, next) => {
 
 module.exports.findAllGamesByGenre = async (req, res, next) => {
     try {
-        const { body: { genres, page, size } } = req;
+        const { body: { genres } } = req;
+        const select = req.body.select || '';
 
-        const games = await GameSchema.find({ 'genres': { $in: genres } })
-            .select('-__v')
-            .skip((page || 0) * (size || 10))
-            .lean();
+        const select_query = {};
+        
+        for(let s of select.split(',')){
+            select_query[s.replace('-','')] = s.includes('-') ? 0 : 1;
+        }
 
-        if (games == []) { throw new ResourceNotFound("Nenhum jogo encontrado."); }
-
+        let query = GameSchema.find({ status: true });
+        
+        if(select) query = GameSchema.find({ 'genres': { $in: genres }, status: true }, select_query);
+        
+        const games = await query.select('-__v');
+        
         res.json(games);
 
     } catch (error) {
