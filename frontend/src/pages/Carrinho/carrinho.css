@@ -1,0 +1,13 @@
+h1 {
+  display: inline;
+}
+
+.spinner-border {
+  position: relative;
+  left: -32px;
+  top: -7px;
+}
+
+.tumbnail {
+  width: 150px;
+}

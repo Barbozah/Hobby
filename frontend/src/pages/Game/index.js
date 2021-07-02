@@ -94,6 +94,7 @@ export default function Game() {
     }, [minimum, game])
 
     function cartHandle(game_id) {
+        var cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         if (backgroundButtonCart.variant === 'success') {
             
@@ -101,8 +102,6 @@ export default function Game() {
                 variant: 'danger',
                 description: 'Remover Jogo'
             });
-
-            var cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             console.log(cart,'teste_guedes');
             cart.push(game._id);
@@ -115,8 +114,6 @@ export default function Game() {
                 variant: 'success',
                 description: 'Carrinho'
             });
-
-            var cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             let newCart = cart.filter((item) => {
                 return item !== game_id;

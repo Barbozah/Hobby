@@ -2,11 +2,11 @@ import React from 'react'
 import { RiHeartAddLine } from 'react-icons/ri'
 import { VscSettingsGear } from 'react-icons/vsc'
 import { BsGrid, BsQuestionCircle } from 'react-icons/bs'
+import { FiShoppingCart } from 'react-icons/fi';
 import {
   AiOutlineHome,
   AiOutlineTag,
-  AiOutlineShoppingCart
-} from 'react-icons/ai'
+} from 'react-icons/ai';
 
 export const SidebarData = [
   {
@@ -15,14 +15,14 @@ export const SidebarData = [
     icon: <AiOutlineHome />
   },
   {
-    title: 'Loja',
-    path: '/shop',
+    title: 'Buscar',
+    path: '/search',
     icon: <AiOutlineTag />
   },
   {
     title: 'Carrinho',
     path: '/cart',
-    icon: <AiOutlineShoppingCart />
+    icon: <FiShoppingCart />
   },
   {
     title: 'Biblioteca',

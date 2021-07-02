@@ -1,5 +1,19 @@
 .topscreen {
   position: fixed;
   left: 14%;
-  top: 10%;
+  top: 2%;
 }
+
+label {
+  display: inline;
+}
+
+.efeito:hover{
+  filter: brightness(1.2);
+}
+
+.card-wrapper {
+  display: block;
+  align-items: stretch;
+}
+

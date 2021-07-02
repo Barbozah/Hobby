@@ -31,7 +31,13 @@ export default function Login() {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('id', response.data._id);
           history.push('/home');
-        }).catch(err => toast.error(err.response.data.message));
+        }).catch(err => {
+          try{
+            toast.error(err.response.data.message)
+          }catch{
+            toast.error("Desculpe, nosso servidor está fora do ar")
+          }
+        });
     }
   };
 

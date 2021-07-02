@@ -30,3 +30,6 @@ h6{
 .efeito:hover{
     filter: brightness(1.2);
 }
+.onleft {
+    margin-left: 0;
+}
