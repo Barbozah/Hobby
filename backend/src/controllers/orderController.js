@@ -75,12 +75,14 @@ module.exports.create = async (req, res, next) => {
 
         order = await order.save();
         
-        sendEmail(order._id);
-
-        res.json({
-            message: "Pedido cadastrado com sucesso.",
-            _id: order._id
-        });
+        sendEmail(order._id)
+            .then(() => {
+                res.json({
+                    message: "Pedido cadastrado com sucesso.",
+                    _id: order._id
+                });
+            })
+            .catch(err => next(err));
 
     } catch (error) {
         next(error);
@@ -199,10 +201,13 @@ module.exports.payment = async (req, res, next) => {
 
         let { body: { _id } } = req;
         
-        sendEmail(_id);
-        res.json({
-            message: "Email enviado com sucesso."
-        });
+        sendEmail(_id)
+            .then(() => {
+                res.json({
+                    message: "Email enviado com sucesso."
+                });
+            })
+            .catch(err => next(err));
 
     } catch (error) {
         next(error);

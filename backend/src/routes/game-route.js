@@ -3,6 +3,7 @@ const {
   findGameByTitle,
   findAllGamesByGenre,
   findAllGenres,
+  search,
   create,
   findAll,
   update,
@@ -19,6 +20,8 @@ module.exports = (express) => {
   router.get('/findAllGamesByGenre', findAllGamesByGenre);
 
   router.get('/findAllGenres', findAllGenres);
+
+  router.post('/search', search);
 
   router.post('/create', create);
 

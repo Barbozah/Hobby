@@ -114,6 +114,37 @@ module.exports.findAll = async (req, res, next) => {
     }
 };
 
+module.exports.search = async (req, res, next) => {
+    try {;
+        const sort = req.body.sort || '';
+        const select = req.body.select || '';
+        const query_search = req.body.query || {};
+
+        const sort_query = sort.split(',').map(s=>s.split('_'));
+
+        const select_query = {};
+        
+        for(let s of select.split(',')){
+            select_query[s.replace('-','')] = s.includes('-') ? 0 : 1;
+        }
+
+        let query = GameSchema.find({ ...query_search, status: true });
+        
+        if(select) query = GameSchema.find({ ...query_search, status: true }, select_query);
+
+        if(sort) query = query.sort(sort_query);
+
+        const games = await query;
+
+        if (!games) { throw new ResourceNotFound("Nenhum jogo encontrado."); }
+
+        res.json(games);
+
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports.create = async (req, res, next) => {
     try {
         const { body } = req;
