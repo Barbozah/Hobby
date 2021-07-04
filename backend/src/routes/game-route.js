@@ -8,6 +8,8 @@ const {
   findAll,
   update,
   deactivate,
+  total,
+  related,
 } = require('../controllers/gameController');
 
 module.exports = (express) => {
@@ -20,6 +22,10 @@ module.exports = (express) => {
   router.get('/findAllGamesByGenre', findAllGamesByGenre);
 
   router.get('/findAllGenres', findAllGenres);
+
+  router.post('/total', total);
+
+  router.post('/related', related);
 
   router.post('/search', search);
 

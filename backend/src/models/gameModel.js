@@ -17,6 +17,7 @@ const GameSchema = new mongoose.Schema({
     reviewInfo: String,
     downloads: [Object],
     status: Boolean,
+    _g: String
 }, { timestamps: true });
 GameSchema.plugin(unique, { message: '{PATH} já existente' });
 

@@ -119,6 +119,8 @@ module.exports.search = async (req, res, next) => {
         const sort = req.body.sort || '';
         const select = req.body.select || '';
         const query_search = req.body.query || {};
+        const page = parseInt(req.body.page || 0);
+        const size = parseInt(req.body.size || 0);
 
         const sort_query = sort.split(',').map(s=>s.split('_'));
 
@@ -128,11 +130,13 @@ module.exports.search = async (req, res, next) => {
             select_query[s.replace('-','')] = s.includes('-') ? 0 : 1;
         }
 
-        let query = GameSchema.find({ ...query_search, status: true });
+        let query = GameSchema.find({ ...query_search, status: true }).skip(page*size).lean();;
         
-        if(select) query = GameSchema.find({ ...query_search, status: true }, select_query);
+        if(select) query = GameSchema.find({ ...query_search, status: true }, select_query).skip(page*size).lean();;
 
         if(sort) query = query.sort(sort_query);
+
+        if(size) query = query.limit(size);
 
         const games = await query;
 
@@ -144,6 +148,56 @@ module.exports.search = async (req, res, next) => {
         next(error);
     }
 };
+
+module.exports.related = async (req, res, next) => {
+    try{
+        const { _id, _g, size } = req.body;
+
+        const levenshteinDistance = (str1 = '', str2 = '') => {
+            const track = Array(str2.length + 1).fill(null).map(() =>
+            Array(str1.length + 1).fill(null));
+            for (let i = 0; i <= str1.length; i += 1) {
+               track[0][i] = i;
+            }
+            for (let j = 0; j <= str2.length; j += 1) {
+               track[j][0] = j;
+            }
+            for (let j = 1; j <= str2.length; j += 1) {
+               for (let i = 1; i <= str1.length; i += 1) {
+                  const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                  track[j][i] = Math.min(
+                     track[j][i - 1] + 1,
+                     track[j - 1][i] + 1,
+                     track[j - 1][i - 1] + indicator,
+                  );
+               }
+            }
+            return track[str2.length][str1.length];
+        };
+
+        function compareGenres(a, b){
+
+            const l1 = levenshteinDistance(_g,a)
+
+            const l2 = levenshteinDistance(_g,b)
+
+            return l1 - l2;
+        }
+
+        GameSchema.find({_id: {$ne: _id}, status: true})
+            .select('_g')
+            .then(gs => {
+                const result = gs.sort((a,b) => compareGenres(a._g, b._g));
+                GameSchema.find({_id: {$in: result.slice(0, size).map(r=>r._id)}})
+                    .then(o => res.json(o))
+            })
+            .catch(err => next(err));
+
+    }catch (error) {
+        console.log(error);
+        next(error);
+    }
+}
 
 module.exports.create = async (req, res, next) => {
     try {
@@ -207,3 +261,17 @@ module.exports.deactivate = async (req, res, next) => {
         next(error);
     }
 };
+
+module.exports.total = async (req, res, next) => {
+    try {
+
+        let {body: { query } } = req;
+
+        const total = await GameSchema.count({...query, status: true});
+
+        res.json(total);
+
+    } catch (error) {
+        next(error);
+    }
+}
