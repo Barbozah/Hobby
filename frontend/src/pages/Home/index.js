@@ -43,7 +43,7 @@ export default function Home() {
       function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
       }
-      await sleep(3000);
+      await sleep(1000);
       setBusy(false);
     }
 

@@ -7,6 +7,7 @@ import {
   AiOutlineHome,
   AiOutlineTag,
 } from 'react-icons/ai';
+import { BiPackage } from 'react-icons/bi';
 
 export const SidebarData = [
   {
@@ -18,6 +19,11 @@ export const SidebarData = [
     title: 'Buscar',
     path: '/search',
     icon: <AiOutlineTag />
+  },
+  {
+    title: 'Seus Pedidos',
+    path: '/orders',
+    icon: <BiPackage />
   },
   {
     title: 'Carrinho',

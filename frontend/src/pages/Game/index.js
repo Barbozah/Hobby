@@ -18,6 +18,7 @@ export default function Game() {
     const [game, setGame] = useState();
     const [minimum, setMinimum] = useState([]);
     const [recomended, setRecomended] = useState([]);
+    const [related, setRelated] = useState([]);
 
     const [backgroundButtonCart, setBackgroundButtonCart] = useState({
         variant: 'success',
@@ -25,6 +26,10 @@ export default function Game() {
     });
 
     const [isGameHasAlready, setIsGameHasAlready] = useState(false);
+
+    function clique(id) {
+        history.push(`/game/${id}`)
+    }
 
     useEffect(() => {
         async function fetchData(url, setter) {//essa função fará a busca no backend pelo id do jogo
@@ -55,6 +60,16 @@ export default function Game() {
                 description: 'Remover Jogo'
             });
             }
+
+            const games = await api.post(`game/related`, {
+                _id: jogo._id,
+                _g: jogo._g,
+                size: 2
+            }, {
+                headers: { Authorization: 'Bearer ' + token }
+            })
+
+            setRelated(games.data)
 
             setter(jogo);
         }
@@ -130,7 +145,7 @@ export default function Game() {
         <Sidenav />
         <Container>
             <Row>
-                {!!game ? <div className="d-flex fs-5"> <Link to='/home'>Início</Link><p>{' > '}</p> <Link to={`/loja/${game.genres[0]}`}>{game.genres[0]}</Link><p>{' > '}</p> <Link to={`/games/${id}`} className='disabled-link'>{game.title}</Link> </div> : <></>}
+                {!!game ? <div className="d-flex fs-5"> <Link to='/home'>Início</Link><p>{' > '}</p> <Link to={`/search?g=${game.genres[0]}`}>{game.genres[0]}</Link><p>{' > '}</p> <Link to={`/games/${id}`} className='disabled-link'>{game.title}</Link> </div> : <></>}
             </Row>
             <Row>
                 {!!game ? <h1 className="text-light mb-5 text-center">{game.title}</h1> : <></>}
@@ -165,8 +180,11 @@ export default function Game() {
                         <Card className="bg-secondary rounded-0">
                             <Card.Body>
                                 <Card.Title className="text-light">Avaliações</Card.Title>
-                                {!!game ? <><StarRatingComponent name="rate2" editing={false} starCount={5} value={game.starsAverage} /> <h6 className="text-light">{game.starsAverage}</h6> </> : <></>}
-
+                                {!!game ? <>
+                                    <StarRatingComponent name="rate2" editing={false} starCount={5} value={game.starsAverage} />
+                                    <span className="text-light va">{game.starsAverage}</span> 
+                                    </> : <></>
+                                }
                             </Card.Body>
                         </Card>
                     </Row>
@@ -174,8 +192,17 @@ export default function Game() {
                         <Card className="bg-secondary rounded-0">
                             <Card.Body>
                                 <Card.Title className="text-light">Jogos relacionados</Card.Title>
-
-
+                                {related.map(r => {
+                                    return (
+                                        <div className="clickable" key={r._id} onClick={() => clique(r._id)}>
+                                            <Card>
+                                                <span className="text-center">{r.title}</span>
+                                                <Card.Img src={r.mainImage}></Card.Img>
+                                            </Card>
+                                            <br />
+                                        </div>
+                                    )
+                                })}
                             </Card.Body>
                         </Card>
                     </Row>

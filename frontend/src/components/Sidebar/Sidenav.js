@@ -18,7 +18,13 @@ export default function Sidenav() {
     history.push('/');
   }
 
+  function getNumberOfItensInCart(){
+    var cart = JSON.parse(localStorage.getItem('cart')) || [];
 
+    if(cart.length > 0){
+      return '(' + cart.length +')';
+    }
+  }
 
   return (
     <>
@@ -45,6 +51,7 @@ export default function Sidenav() {
                   <Link to={item.path}>
                     {item.icon}
                     <span>{item.title}</span>
+                    {(item.title === 'Carrinho') && <span>{getNumberOfItensInCart()}</span>}
                   </Link>
                 </li>
               );

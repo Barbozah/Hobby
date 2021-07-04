@@ -10,3 +10,12 @@ a {
 i {
     font-size: xx-large;
 }
+
+.va {
+    position: relative;
+    top: -15px;
+}
+
+.clickable {
+    cursor: pointer;
+}

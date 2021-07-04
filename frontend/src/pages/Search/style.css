@@ -2,6 +2,7 @@
   position: fixed;
   left: 14%;
   top: 2%;
+  z-index: 10;
 }
 
 label {
@@ -13,7 +14,37 @@ label {
 }
 
 .card-wrapper {
-  display: block;
-  align-items: stretch;
+  max-width: 1320px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }
 
+.pagination {
+  max-width: 1320px;
+  margin-left: 12px;
+}
+
+.page-link {
+  background-color: transparent !important;
+  margin-left: 0;
+}
+
+.page-item {
+  width: 41px;
+  text-align: center;
+}
+
+.card-w-item {
+  margin: 10px;
+}
+
+.spinner-border {
+  position: relative;
+  left: 44%;
+  color: white;
+}
+
+h2 {
+  color: white;
+  text-align: center;
+}
